@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sustainability Economics.ai — Full-Screen SVG Presentation</title>
+    <style>
+      :root {
+        --bg: #000;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+          "Apple Color Emoji", "Segoe UI Emoji";
+      }
+
+      /* Scroll area for slides (works in full-page and inside iframe preview). */
+      .presentation {
+        height: 100vh;
+        overflow-y: auto;
+        scroll-snap-type: y mandatory;
+        background: var(--bg);
+      }
+
+      .slide {
+        height: 100vh;
+        width: 100vw;
+        position: relative;
+        scroll-snap-align: start;
+        overflow: hidden;
+        background: var(--bg);
+      }
+
+      .slide img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+
+      /* Default state: wait for slide to enter viewport. */
+      .slide img {
+        opacity: 0;
+        transform: translateX(var(--from-x, 0px)) translateY(10px) scale(1.015);
+        will-change: opacity, transform;
+      }
+
+      .slide.is-visible img {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1.0);
+        transition:
+          opacity 600ms ease-out,
+          transform 820ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .slide img {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+      }
+
+      .back-to-main {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 1000;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: #e8e8e8;
+        text-decoration: none;
+        padding: 0.45rem 0.85rem;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(8px);
+      }
+
+      .back-to-main:hover {
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.24);
+      }
+    </style>
+  </head>
+  <body>
+    <a class="back-to-main" href="./index.html#projects" target="_top" rel="noopener" aria-label="Back to main page">Back to main page</a>
+    <main class="presentation" aria-label="Sustainability Economics.ai full-screen presentation">
+      <section class="slide" id="slide1" aria-label="Slide 1">
+        <img src="./logo.svg" alt="" />
+      </section>
+      <section class="slide" id="slide2" aria-label="Slide 2">
+        <img src="./logo1.svg" alt="" />
+      </section>
+      <section class="slide" id="slide3" aria-label="Slide 3">
+        <img src="./logo2.svg" alt="" />
+      </section>
+      <section class="slide" id="slide4" aria-label="Slide 4">
+        <img src="./logo3.svg" alt="" />
+      </section>
+      <section class="slide" id="slide5" aria-label="Slide 5">
+        <img src="./logo4.svg" alt="" />
+      </section>
+      <section class="slide" id="slide6" aria-label="Slide 6">
+        <img src="./logo5.svg" alt="" />
+      </section>
+      <section class="slide" id="slide7" aria-label="Slide 7">
+        <img src="./logo6.svg" alt="" />
+      </section>
+      <section class="slide" id="slide8" aria-label="Slide 8">
+        <img src="./logo7.svg" alt="" />
+      </section>
+    </main>
+
+    <script>
+      (() => {
+        const presentation = document.querySelector(".presentation");
+        const slides = Array.from(document.querySelectorAll(".slide"));
+
+        // Respect accessibility settings.
+        if (
+          window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) {
+          slides.forEach((s) => s.classList.add("is-visible"));
+          return;
+        }
+
+        let lastScrollTop = presentation.scrollTop;
+        let scrollDir = 1; // 1 = down, -1 = up
+
+        const updateScrollDir = () => {
+          const current = presentation.scrollTop;
+          scrollDir = current >= lastScrollTop ? 1 : -1;
+          lastScrollTop = current;
+        };
+
+        // Update scroll direction without doing work on every event tick.
+        let dirRaf = 0;
+        presentation.addEventListener(
+          "scroll",
+          () => {
+            if (dirRaf) return;
+            dirRaf = window.requestAnimationFrame(() => {
+              dirRaf = 0;
+              updateScrollDir();
+            });
+          },
+          { passive: true },
+        );
+
+        const baseFromPx = 64;
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              const slide = entry.target;
+              const idx = slides.indexOf(slide);
+              if (idx < 0) continue;
+
+              if (entry.isIntersecting) {
+                // Alternate entry side: slide1 left, slide2 right, etc.
+                // When reversing (scroll up), invert the side so the motion feels consistent.
+                const baseSign = idx % 2 === 0 ? -1 : 1; // -1 => left, 1 => right
+                const sign = baseSign * (scrollDir === 1 ? 1 : -1);
+                slide.style.setProperty("--from-x", `${sign * baseFromPx}px`);
+                slide.classList.add("is-visible");
+              } else {
+                // Re-trigger animation when the slide re-enters viewport.
+                slide.classList.remove("is-visible");
+              }
+            }
+          },
+          {
+            root: presentation,
+            threshold: 0.55,
+          },
+        );
+
+        slides.forEach((slide) => observer.observe(slide));
+      })();
+    </script>
+  </body>
+</html>
+

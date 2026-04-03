@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vysakh TK | UI/UX Designer</title>
+    <meta
+      name="description"
+      content="Portfolio website showcasing product design work, process, and contact details."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg-parallax" aria-hidden="true">
+      <span class="parallax-glow glow-purple" data-speed="0.09"></span>
+      <span class="parallax-glow glow-orange" data-speed="0.13"></span>
+      <span class="parallax-glow glow-blue" data-speed="0.07"></span>
+    </div>
+
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <nav class="nav-links" aria-label="Primary">
+          <a class="is-active" href="#home">Home</a>
+          <a href="#projects">Projects</a>
+          <a href="./about-me.html">About Me</a>
+        </nav>
+        <button class="menu-btn" aria-expanded="false" aria-controls="mobile-nav">
+          Menu
+        </button>
+      </div>
+      <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile">
+        <a class="is-active" href="#home">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="./about-me.html">About Me</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="hero section">
+        <div class="container hero-grid">
+          <div>
+            <p class="eyebrow">Greetings 👋🏽</p>
+            <h1>
+              I'm <span class="text-accent">Vysakh TK</span>, a UI/UX Designer based in
+              Bengaluru, India.
+            </h1>
+            <p class="hero-copy">
+              UI/UX Designer with 4 years of experience creating engaging, user-friendly
+              products. Currently designing core climate-tech products at
+              <strong>Sustainainabilityeconomics.ai</strong>.
+            </p>
+            <div class="hero-cta">
+              <a class="btn btn-primary" href="#projects">View Projects</a>
+              <a class="btn btn-secondary" href="#contact">Let's Connect</a>
+            </div>
+          </div>
+          <div class="hero-card">
+            <p class="hero-card-title">Now Building</p>
+            <p>Dashboards and workflows for emissions reporting, simulation, and risk mapping.</p>
+            <div class="status-row">
+              <span class="dot"></span>
+              <span>Open to product design opportunities</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="section">
+        <div class="container">
+          <p class="eyebrow">Work</p>
+          <div class="projects-head">
+            <h2>Projects</h2>
+            <a class="projects-link" href="#">View all projects</a>
+          </div>
+          <p class="projects-subcopy">
+            Every project starts with a problem worth solving. Here is what I have designed.
+          </p>
+          <div class="work-filters" aria-label="Project categories">
+            <button class="filter-chip is-active" type="button">All Projects</button>
+            <button class="filter-chip" type="button">Case Studies</button>
+            <button class="filter-chip" type="button">Product Design</button>
+            <button class="filter-chip" type="button">Websites</button>
+            <button class="filter-chip" type="button">Branding</button>
+            <button class="filter-chip" type="button">Design &amp; Dev</button>
+          </div>
+
+          <div class="work-slider-controls" aria-label="Project slider controls">
+            <button class="slider-btn" type="button" data-dir="prev" aria-label="Previous project">
+              &#8592;
+            </button>
+            <button class="slider-btn" type="button" data-dir="next" aria-label="Next project">
+              &#8594;
+            </button>
+          </div>
+
+          <div class="work-grid" tabindex="0" aria-label="Selected work slider">
+            <article class="work-card">
+              <div class="work-media work-media-fitzdo">
+                <iframe
+                  class="work-media-fitzdo-iframe"
+                  src="./fitzdo-case-study.html?embed=1"
+                  title="FITZDO case study — first screen preview"
+                  loading="lazy"
+                  tabindex="-1"
+                ></iframe>
+              </div>
+              <div class="work-meta">
+                <h3>FITZDO</h3>
+                <p>Healthcare partner portal — fitness, wellness, and care in one digital ecosystem.</p>
+                <a class="projects-link" href="./fitzdo-case-study.html">View case study</a>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-media work-media-svgslides" aria-label="Sustainability Economics.ai full-screen presentation preview">
+                <iframe
+                  class="work-media-svgslides-iframe"
+                  src="./sustainabilityeconomics-svg-presentation.html#slide1"
+                  title="Sustainability Economics.ai — Re-branding presentation — slide 1 preview"
+                  loading="lazy"
+                  tabindex="-1"
+                ></iframe>
+              </div>
+              <div class="work-meta">
+                <h3>Sustainability Economics.ai — Re-branding</h3>
+                <p>Full-screen re-branding sequence (8 slides) for the Sustainability Economics.ai mark.</p>
+                <a class="projects-link" href="./sustainabilityeconomics-svg-presentation.html#slide1">View re-branding</a>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-media work-media-squadra" aria-label="Squadra case study preview">
+                <iframe
+                  class="work-media-squadra-iframe"
+                  src="./squadra-case-study.html"
+                  title="Squadra case study — first screen preview"
+                  loading="lazy"
+                  tabindex="-1"
+                ></iframe>
+              </div>
+              <div class="work-meta">
+                <h3>Squadra</h3>
+                <p>Product UX case study covering dashboard workflows and scalable learning experience design.</p>
+                <a class="projects-link" href="./squadra-case-study.html">View case study</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" class="section experience-section">
+        <div class="container">
+          <div class="experience-head">
+            <span class="exp-symbol exp-symbol-star" aria-hidden="true"></span>
+            <div>
+              <p class="eyebrow">Professional Experience</p>
+              <h2>Experience</h2>
+            </div>
+            <span class="exp-symbol exp-symbol-lines" aria-hidden="true"></span>
+          </div>
+          <p class="experience-intro">
+            Hands-on product design journey across climate-tech, design studio, and marketing-led
+            environments.
+          </p>
+          <div class="exp-list">
+            <article class="exp-item exp-item-active">
+              <span class="exp-number">1</span>
+              <div class="exp-role">
+                <h3>UI/UX Designer</h3>
+                <p><span class="hero-highlight">Sustainainabilityeconomics.ai</span> - Bangalore</p>
+              </div>
+              <p class="exp-duration">Job Duration - 2+ Years</p>
+            </article>
+            <article class="exp-item">
+              <span class="exp-number">2</span>
+              <div class="exp-role">
+                <h3>UI/UX Designer</h3>
+                <p>Stead.global - Bangalore</p>
+              </div>
+              <p class="exp-duration">Job Duration - 1 Year</p>
+            </article>
+            <article class="exp-item">
+              <span class="exp-number">3</span>
+              <div class="exp-role">
+                <h3>Design and Marketing Head</h3>
+                <p>Adventure Voyage - Calicut</p>
+              </div>
+              <p class="exp-duration">Job Duration - 3 Years</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section section-soft">
+        <div class="container">
+          <p class="eyebrow">A Generalist Focused in</p>
+          <h2>Product Design</h2>
+          <div class="focus-grid">
+            <article class="focus-card focus-wide focus-card--illustrated">
+              <div>
+                <h3>UX Research</h3>
+              </div>
+              <img
+                class="focus-card-illustration"
+                src="./svg/UX%20RESEARCH.svg"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </article>
+            <article class="focus-card focus-card--illustrated focus-card--visual-line">
+              <div>
+                <h3>Visual Design</h3>
+              </div>
+              <img
+                class="focus-card-illustration"
+                src="./svg/Visual%20Design.svg"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </article>
+            <article class="focus-card focus-card--illustrated">
+              <div>
+                <h3>Branding</h3>
+              </div>
+              <img
+                class="focus-card-illustration"
+                src="./svg/Branding.svg"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </article>
+            <article class="focus-card focus-wide focus-card--illustrated focus-card--systems-line">
+              <div>
+                <h3>Design Systems</h3>
+              </div>
+              <img
+                class="focus-card-illustration"
+                src="./svg/Design%20systems.svg"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="container contact">
+          <p class="eyebrow">What's next?</p>
+          <h2 class="contact-title">
+            <span class="contact-title-line">Intrigued by what you've seen?</span>
+            <span class="contact-title-line">Let's take a Peek to</span>
+          </h2>
+          <a class="btn-peek" href="#projects">Projects</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-wrap">
+        <p>&copy; <span id="year"></span> Vysakh TK</p>
+        <div class="socials">
+          <a href="https://www.linkedin.com/in/vysakhtk02/" aria-label="LinkedIn profile">LinkedIn</a>
+          <a href="https://www.behance.net/vysakhtk" aria-label="Behance profile">Behance</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

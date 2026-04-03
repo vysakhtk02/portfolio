@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Squadra — LMS Admin UX Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Epilogue:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Archivo:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #018270;
+    --green-light: #e6f4f2;
+    --green-mid: #02a68e;
+    --dark: #081D13;
+    --gray1: #4E5954;
+    --gray2: #616B67;
+    --gray3: #8C9490;
+    --border: #e2e8e6;
+    --bg: #ffffff;
+    --bg2: #f7faf9;
+    --bg3: #f0f5f3;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Epilogue', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    color: var(--dark);
+    background: var(--bg);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 4rem; height: 64px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--serif); font-size: 1.2rem; font-weight: 400; color: var(--dark);
+    text-decoration: none;
+  }
+  .nav-logo span {
+    width: 28px; height: 28px; background: var(--green);
+    border-radius: 7px; display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo span svg { width: 16px; height: 16px; fill: #fff; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; color: var(--gray1);
+    text-decoration: none; letter-spacing: 0.02em;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .nav-tag {
+    font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--green); background: var(--green-light);
+    padding: 5px 12px; border-radius: 100px;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 0 4rem 5rem;
+    background: var(--dark); position: relative; overflow: hidden;
+    padding-top: 64px;
+  }
+  .hero-bg-pattern {
+    position: absolute; inset: 0; opacity: .07;
+    background-image: radial-gradient(circle, #018270 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .hero-accent {
+    position: absolute; top: 0; right: 0; width: 50%;
+    height: 100%; background: var(--green); opacity: .04;
+    clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 600; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--green);
+    margin-bottom: 2rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 24px; height: 1px; background: var(--green);
+  }
+  .hero h1 {
+    font-family: var(--serif); font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 300; line-height: 1.0; color: #fff;
+    max-width: 900px; margin-bottom: 2rem;
+  }
+  .hero h1 em { color: var(--green); font-style: italic; }
+  .hero-meta {
+    display: flex; gap: 4rem; flex-wrap: wrap; margin-bottom: 3rem;
+  }
+  .hero-meta-item label {
+    display: block; font-size: 10px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: rgba(255,255,255,.4); margin-bottom: 4px;
+  }
+  .hero-meta-item span { font-size: 13px; color: rgba(255,255,255,.7); }
+  .hero-scroll {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 500; letter-spacing: .1em;
+    text-transform: uppercase; color: rgba(255,255,255,.3);
+  }
+  .hero-scroll::after {
+    content: ''; display: block; width: 40px; height: 1px;
+    background: rgba(255,255,255,.2);
+  }
+
+  /* ─── SECTIONS ─── */
+  .section {
+    padding: 8rem 4rem;
+  }
+  .section--alt { background: var(--bg2); }
+  .section--dark { background: var(--dark); }
+  .section--green { background: var(--green); }
+
+  .section-inner {
+    max-width: 1100px; margin: 0 auto;
+  }
+
+  .section-num {
+    font-family: var(--serif); font-size: 11rem; font-weight: 300;
+    line-height: 1; color: rgba(0,0,0,.04); margin-bottom: -3rem;
+    display: block; letter-spacing: -.02em;
+  }
+  .section--dark .section-num { color: rgba(255,255,255,.04); }
+
+  .section-label {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 1.2rem;
+  }
+  .section-label .dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+    flex-shrink: 0;
+  }
+  .section-label span {
+    font-size: 11px; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--green);
+  }
+  .section--dark .section-label span { color: rgba(1,130,112,.8); }
+
+  h2.section-title {
+    font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300; line-height: 1.15; color: var(--dark);
+    margin-bottom: 1.5rem;
+  }
+  .section--dark h2.section-title { color: #fff; }
+  .section--green h2.section-title { color: #fff; }
+
+  .section-lead {
+    font-size: 1.1rem; color: var(--gray1); line-height: 1.8;
+    max-width: 640px; margin-bottom: 3rem;
+  }
+  .section--dark .section-lead { color: rgba(255,255,255,.55); }
+  .section--green .section-lead { color: rgba(255,255,255,.75); }
+
+  /* ─── OVERVIEW CARDS ─── */
+  .overview-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px;
+    background: var(--border); border: 1.5px solid var(--border);
+    border-radius: 16px; overflow: hidden; margin-top: 3rem;
+  }
+  .overview-card {
+    background: var(--bg); padding: 2.5rem 2rem;
+  }
+  .overview-card:first-child { border-radius: 14px 0 0 14px; }
+  .overview-card:last-child { border-radius: 0 14px 14px 0; }
+  .oc-num {
+    font-family: var(--serif); font-size: 3.5rem; font-weight: 300;
+    color: var(--green); line-height: 1; margin-bottom: .8rem;
+  }
+  .oc-title { font-size: .85rem; font-weight: 600; color: var(--dark); margin-bottom: .5rem; }
+  .oc-desc { font-size: .82rem; color: var(--gray2); line-height: 1.6; }
+
+  /* ─── TWO COL ─── */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+  }
+  .two-col--thirds {
+    display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; align-items: start;
+  }
+
+  /* ─── INSIGHT CARDS ─── */
+  .insight-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem;
+  }
+  .insight-card {
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.8rem; background: var(--bg);
+    transition: border-color .2s, transform .2s;
+  }
+  .insight-card:hover { border-color: var(--green); transform: translateY(-2px); }
+  .insight-card .ic-icon {
+    width: 40px; height: 40px; background: var(--green-light);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .insight-card .ic-icon svg { width: 18px; height: 18px; stroke: var(--green); fill: none; stroke-width: 1.8; }
+  .insight-card h4 { font-size: .9rem; font-weight: 600; color: var(--dark); margin-bottom: .5rem; }
+  .insight-card p { font-size: .82rem; color: var(--gray2); line-height: 1.7; }
+
+  /* Stronger icon visibility for usability cards */
+  .section-usability .insight-card .ic-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: rgba(1, 130, 112, 0.16);
+    border: 1px solid rgba(1, 130, 112, 0.28);
+    box-shadow: 0 6px 18px rgba(1, 130, 112, 0.15);
+  }
+  .section-usability .insight-card .ic-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: #027c6c;
+    stroke-width: 2.3;
+  }
+
+  /* ─── QUOTE ─── */
+  .big-quote {
+    padding: 4rem 0; border-top: 1px solid rgba(255,255,255,.1);
+    border-bottom: 1px solid rgba(255,255,255,.1); margin: 4rem 0;
+  }
+  .big-quote p {
+    font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 300; font-style: italic; color: #fff; line-height: 1.4;
+    max-width: 800px;
+  }
+  .big-quote cite {
+    display: block; font-size: 12px; font-weight: 500;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--green); margin-top: 1rem;
+    font-style: normal;
+  }
+
+  /* ─── SCREEN DISPLAY ─── */
+  .screen-wrap {
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 24px 80px rgba(8,29,19,.08);
+    background: var(--bg2);
+  }
+  .screen-wrap img {
+    width: 100%; display: block;
+  }
+  .screen-caption {
+    padding: 1rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border);
+  }
+  .screen-caption span { font-size: 12px; font-weight: 500; color: var(--gray2); }
+  .screen-badge {
+    font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    background: var(--green-light); color: var(--green);
+    padding: 4px 10px; border-radius: 100px;
+  }
+
+  /* ─── MOBILE SCREENS ─── */
+  .mobile-wrap {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+    margin-top: 3rem;
+  }
+  .mobile-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .iphone13 {
+    width: 330px;
+    max-width: 100%;
+    height: 680px;
+    border-radius: 44px;
+    border: 10px solid #0d0d0f;
+    background: #000;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  }
+  .iphone-screen {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #fff;
+    scrollbar-width: thin;
+  }
+  .iphone-screen img { width: 100%; display: block; }
+  .mobile-label {
+    text-align: center;
+    font-size: 12px; font-weight: 500; color: var(--gray2);
+  }
+
+  /* ─── COMPETITOR TABLE ─── */
+  .comp-table-wrap {
+    border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-top: 2rem;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: var(--dark); }
+  thead th {
+    padding: 14px 20px; text-align: left;
+    font-size: 11px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: rgba(255,255,255,.6);
+  }
+  tbody tr:nth-child(even) td { background: var(--bg2); }
+  tbody td { padding: 16px 20px; font-size: .88rem; color: var(--gray1); border-bottom: 1px solid var(--border); }
+  tbody tr:last-child td { border-bottom: none; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 6px; }
+  .tag-green { background: #dcf5ed; color: var(--green); }
+  .tag-red { background: #fde8e8; color: #c0392b; }
+  .tag-amber { background: #fef3cd; color: #a0710a; }
+  td strong { font-weight: 600; color: var(--dark); }
+
+  /* ─── USER JOURNEY ─── */
+  .journey-row {
+    padding: 2.25rem 2rem;
+    background: #f2f6f5;
+    border-radius: 16px;
+    margin-top: 2rem;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .journey-track {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(120px, 1fr));
+    align-items: start;
+    gap: 0;
+    min-width: 920px;
+  }
+  .journey-step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .65rem;
+    text-align: center;
+  }
+  .journey-step::after {
+    content: "";
+    position: absolute;
+    top: 26px;
+    left: calc(50% + 32px);
+    width: calc(100% - 64px);
+    height: 1px;
+    background: rgba(8, 29, 19, 0.15);
+  }
+  .journey-step:last-child::after {
+    display: none;
+  }
+  .journey-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 999px;
+    background: var(--green);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(1, 130, 112, 0.25);
+    z-index: 1;
+  }
+  .journey-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1.35;
+  }
+
+  /* ─── STRATEGY CARDS ─── */
+  .strategy-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem;
+  }
+  .strategy-card {
+    padding: 1.8rem; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.04);
+    transition: background .2s;
+  }
+  .strategy-card:hover { background: rgba(255,255,255,.07); }
+  .strategy-card h4 {
+    font-size: .9rem; font-weight: 600; color: #fff; margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .strategy-card h4 span {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: block;
+  }
+  .strategy-card ul { list-style: none; padding: 0; }
+  .strategy-card ul li {
+    font-size: .8rem; color: rgba(255,255,255,.45);
+    padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.05);
+    line-height: 1.5;
+  }
+  .strategy-card ul li:last-child { border-bottom: none; }
+
+  /* ─── FEATURE SECTIONS ─── */
+  .feature-block { margin-bottom: 6rem; }
+  .feature-block:last-child { margin-bottom: 0; }
+  .feature-header {
+    display: flex; align-items: flex-start; gap: 1rem;
+    margin-bottom: 2rem; padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .feature-num {
+    font-family: var(--serif); font-size: 3rem; font-weight: 300;
+    color: var(--green); line-height: 1; flex-shrink: 0;
+    margin-top: -.3rem;
+  }
+  .feature-header h3 {
+    font-family: var(--serif); font-size: 2rem; font-weight: 300; color: var(--dark);
+  }
+  .feature-header p { font-size: .9rem; color: var(--gray1); margin-top: .5rem; line-height: 1.7; }
+
+  .feature-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2rem; }
+  .feature-tag {
+    font-size: 11px; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--green);
+    border: 1px solid rgba(1,130,112,.25); padding: 5px 12px; border-radius: 100px;
+    background: var(--green-light);
+  }
+
+  /* ─── METRIC CARDS ─── */
+  .metrics-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; margin-top: 3rem;
+  }
+  .metric-card {
+    padding: 2.5rem 1.5rem; background: var(--bg); text-align: center;
+  }
+  .metric-val {
+    font-family: var(--serif); font-size: 2.8rem; font-weight: 300;
+    color: var(--green); line-height: 1; margin-bottom: .5rem;
+  }
+  .metric-label { font-size: .78rem; font-weight: 500; color: var(--gray2); line-height: 1.4; }
+
+  /* ─── DESIGN SYSTEM SECTION ─── */
+  .ds-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;
+  }
+  .ds-card {
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .ds-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 48px rgba(8,29,19,.08);
+  }
+  .ds-card img { width: 100%; display: block; }
+  .ds-card img.ds-fixed-frame {
+    height: 260px;
+    object-fit: contain;
+    background: #fff;
+  }
+  .ds-card img.ds-illustration-zoomout {
+    transform: scale(1.5);
+    transform-origin: center center;
+  }
+  .ds-card-body {
+    padding: 1.2rem;
+    background: var(--bg);
+  }
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .8rem;
+  }
+  .swatch {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .swatch-color {
+    height: 56px;
+    border-bottom: 1px solid var(--border);
+  }
+  .swatch-meta {
+    padding: .55rem .65rem;
+  }
+  .swatch-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--dark);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .swatch-hex {
+    font-size: 11px;
+    color: var(--gray2);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .type-specimen {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: .9rem;
+    margin-bottom: .7rem;
+    background: #fff;
+  }
+  .type-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: .45rem;
+    gap: .8rem;
+  }
+  .type-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dark);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .type-role {
+    font-size: 10px;
+    color: var(--green);
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .type-sample {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    color: var(--dark);
+  }
+  .type-sample.archivo { font-family: 'Archivo', var(--sans); font-weight: 700; }
+  .type-sample.ibm { font-family: 'IBM Plex Sans', var(--sans); font-weight: 400; }
+  .type-caption {
+    margin-top: .45rem;
+    font-size: 11px;
+    color: var(--gray2);
+  }
+  .ds-card-label {
+    padding: 1rem 1.2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border); background: var(--bg);
+  }
+  .ds-card-label span { font-size: 12px; font-weight: 500; color: var(--gray2); }
+  .ds-card-label em {
+    font-style: normal; font-size: 11px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--green);
+  }
+
+  /* ─── TAKEAWAYS ─── */
+  .takeaway-list { list-style: none; padding: 0; margin-top: 2rem; }
+  .takeaway-item {
+    display: flex; gap: 2rem; padding: 2rem 0;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    align-items: flex-start;
+  }
+  .takeaway-item:last-child { border-bottom: none; }
+  .ti-num {
+    font-family: var(--serif); font-size: 3rem; font-weight: 300;
+    color: var(--green); line-height: 1; flex-shrink: 0; min-width: 3rem;
+  }
+  .ti-content h4 { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: .5rem; }
+  .ti-content p { font-size: .88rem; color: rgba(255,255,255,.5); line-height: 1.7; }
+
+  /* ─── OUTCOME ─── */
+  .outcome-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem;
+  }
+  .outcome-card {
+    padding: 2rem; border-radius: 12px;
+    background: rgba(1,130,112,.07); border: 1px solid rgba(1,130,112,.15);
+    display: flex; gap: 1.2rem; align-items: flex-start;
+  }
+  .outcome-icon {
+    width: 36px; height: 36px; background: var(--green);
+    border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .outcome-icon svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 2; }
+  .outcome-card h4 { font-size: .9rem; font-weight: 600; color: var(--dark); margin-bottom: .3rem; }
+  .outcome-card p { font-size: .82rem; color: var(--gray2); line-height: 1.6; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--dark); padding: 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 2rem;
+  }
+  .footer-left { }
+  .footer-title {
+    font-family: var(--serif); font-size: 1.8rem; font-weight: 300; color: #fff;
+    margin-bottom: .5rem;
+  }
+  .footer-sub { font-size: .82rem; color: rgba(255,255,255,.4); }
+  .footer-tag {
+    font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--green); background: rgba(1,130,112,.12);
+    padding: 8px 18px; border-radius: 100px; border: 1px solid rgba(1,130,112,.2);
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider { height: 1px; background: var(--border); }
+
+  /* ─── PILLS ─── */
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 1rem 0; }
+  .pill {
+    font-size: 12px; font-weight: 500; color: var(--green);
+    background: var(--green-light); padding: 5px 13px; border-radius: 100px;
+  }
+  .pill-dark {
+    font-size: 12px; font-weight: 500; color: #fff;
+    background: var(--green); padding: 5px 13px; border-radius: 100px;
+  }
+
+  /* ─── USER PERSONAS ─── */
+  .persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+  .persona-card {
+    border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+    background: var(--bg);
+  }
+  .persona-header {
+    padding: 1.8rem; background: var(--dark);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .persona-avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--green); display: flex; align-items: center;
+    justify-content: center; font-size: 1.2rem; flex-shrink: 0;
+  }
+  .persona-header h4 { font-size: .9rem; font-weight: 600; color: #fff; }
+  .persona-header span { font-size: .78rem; color: rgba(255,255,255,.5); display: block; margin-top: 2px; }
+  .persona-body { padding: 1.8rem; }
+  .persona-body p { font-size: .85rem; color: var(--gray1); line-height: 1.7; margin-bottom: 1rem; }
+  .persona-priority {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--green); margin-bottom: .5rem;
+  }
+
+  /* ─── FULL-WIDTH IMAGE ─── */
+  .fw-screen {
+    width: 100%; display: block;
+    border: 0;
+  }
+  .fw-screen img { width: 100%; display: block; }
+
+  /* ─── ANIMATED UNDERLINE ON HEADINGS ─── */
+  .highlight { position: relative; color: var(--green); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 0 2rem; }
+    .nav-links { display: none; }
+    .hero { padding: 0 2rem 3rem; }
+    .section { padding: 5rem 2rem; }
+    .two-col, .two-col--thirds, .insight-grid, .strategy-grid,
+    .overview-grid, .persona-grid, .ds-grid, .outcome-grid,
+    .mobile-wrap, .metrics-row { grid-template-columns: 1fr; }
+    .overview-card { border-radius: 0 !important; }
+    .metrics-row { gap: 1px; }
+    .hero h1 { font-size: 3rem; }
+    footer { padding: 2rem; }
+    .feature-header { flex-direction: column; }
+  }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .fade-up.delay-1 { transition-delay: .1s; }
+  .fade-up.delay-2 { transition-delay: .2s; }
+  .fade-up.delay-3 { transition-delay: .3s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="./index.html#projects" target="_top" rel="noopener" aria-label="Back to main page">
+    <span>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3C7 3 3 6.5 3 11c0 2.4 1.1 4.5 2.8 6L5 21l4-1.5c1 .3 2 .5 3 .5 5 0 9-3.5 9-8s-4-9-9-9z"/>
+      </svg>
+    </span>
+    Squadra
+  </a>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#research">Research</a>
+    <a href="#strategy">Strategy</a>
+    <a href="#screens">Screens</a>
+    <a href="#system">Design System</a>
+    <a href="#outcomes">Outcomes</a>
+  </div>
+  <span class="nav-tag">UX Case Study</span>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-accent"></div>
+  <span class="hero-eyebrow">UX Case Study — EdTech / SaaS</span>
+  <h1>Redesigning the<br><em>LMS Admin</em><br>Experience</h1>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><label>Product</label><span>Squadra LMS</span></div>
+    <div class="hero-meta-item"><label>Scope</label><span>Dashboard · Course Creation · Course List</span></div>
+    <div class="hero-meta-item"><label>Platform</label><span>Desktop + Mobile</span></div>
+    <div class="hero-meta-item"><label>Discipline</label><span>UX Research · Product Design · Design System</span></div>
+  </div>
+  <div class="hero-scroll">Scroll to explore</div>
+</section>
+
+<!-- ─── OVERVIEW ─── -->
+<section class="section" id="overview">
+  <div class="section-inner">
+    <span class="section-num">01</span>
+    <div class="section-label"><span class="dot"></span><span>Project Overview</span></div>
+    <h2 class="section-title fade-up">Where complexity<br>meets opportunity</h2>
+    <p class="section-lead fade-up delay-1">Learning Management Systems are powerful — but most are designed around capability, not clarity. Squadra aimed to fix that: redesigning the admin experience from the ground up so the tool gets out of the way and lets people do their best work.</p>
+
+    <div class="overview-grid fade-up delay-2">
+      <div class="overview-card">
+        <div class="oc-num">01</div>
+        <div class="oc-title">The Problem</div>
+        <div class="oc-desc">LMS admin interfaces are overwhelming, fragmented, and slow — with poor hierarchy, no task guidance, and weak visibility into what matters most.</div>
+      </div>
+      <div class="overview-card">
+        <div class="oc-num">02</div>
+        <div class="oc-title">The Objective</div>
+        <div class="oc-desc">Design a responsive, focused admin experience across three critical workflows: Dashboard, Course Creation, and Course List management.</div>
+      </div>
+      <div class="overview-card" style="background:var(--dark);">
+        <div class="oc-num" style="color:var(--green);">03</div>
+        <div class="oc-title" style="color:#fff;">The North Star</div>
+        <div class="oc-desc" style="color:rgba(255,255,255,.5);">Reduce cognitive load so admins can focus on outcomes — not on navigating the system. Efficiency, visibility, and confidence by design.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── RESEARCH ─── -->
+<section class="section section--alt" id="research">
+  <div class="section-inner">
+    <span class="section-num">02</span>
+    <div class="section-label"><span class="dot"></span><span>Research & Discovery</span></div>
+    <div class="two-col">
+      <div>
+        <h2 class="section-title fade-up">Understanding the<br>real problem</h2>
+        <p class="section-lead fade-up delay-1">Before sketching a single wireframe, we committed to understanding the actual problem. Research ran in two parallel tracks — qualitative depth and quantitative breadth.</p>
+        <div class="pills fade-up delay-2">
+          <span class="pill">User Interviews</span>
+          <span class="pill">Contextual Inquiry</span>
+          <span class="pill">Surveys</span>
+          <span class="pill">Analytics Review</span>
+          <span class="pill">Competitor Analysis</span>
+          <span class="pill">Heuristic Evaluation</span>
+        </div>
+      </div>
+      <div class="fade-up delay-2">
+        <div class="insight-grid">
+          <div class="insight-card">
+            <div class="ic-icon">
+              <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            </div>
+            <h4>Overwhelming Forms</h4>
+            <p>30+ fields on a single course creation page with no logical grouping, no progress indication, and no auto-save.</p>
+          </div>
+          <div class="insight-card">
+            <div class="ic-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <h4>Dashboard Blindness</h4>
+            <p>KPIs buried 4–5 clicks deep. Admins couldn't answer basic questions about course performance without significant navigation.</p>
+          </div>
+          <div class="insight-card">
+            <div class="ic-icon">
+              <svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+            </div>
+            <h4>Navigation Maze</h4>
+            <p>Deep nested menus with inconsistent labels. Users frequently backtracked or relied on browser history to navigate.</p>
+          </div>
+          <div class="insight-card">
+            <div class="ic-icon">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            </div>
+            <h4>Search Dead Ends</h4>
+            <p>Course lists had no compound filtering, no saved views, and search was limited to exact-match title queries only.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DARK QUOTE ─── -->
+<section class="section section--dark">
+  <div class="section-inner">
+    <div class="big-quote">
+      <p>"I spend half my time just trying to find where things are. Creating a course should take 10 minutes — it takes me 45."</p>
+      <cite>— LMS Admin, User Research Interview</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TARGET USERS ─── -->
+<section class="section" id="users">
+  <div class="section-inner">
+    <span class="section-num">03</span>
+    <div class="section-label"><span class="dot"></span><span>Target Users</span></div>
+    <h2 class="section-title fade-up">Designing for two distinct mental models</h2>
+    <p class="section-lead fade-up delay-1">Two user personas emerged — each with different success criteria. Balancing power with simplicity required designing a system that could serve both without compromise.</p>
+
+    <div class="persona-grid fade-up delay-2">
+      <div class="persona-card">
+        <div class="persona-header">
+          <div class="persona-avatar">👤</div>
+          <div>
+            <h4>Primary — LMS Admin</h4>
+            <span>Speed + Control</span>
+          </div>
+        </div>
+        <div class="persona-body">
+          <p>Manages hundreds of courses, users, and reports. Works at high volume daily. Values efficiency above all — any friction compounds across hundreds of tasks.</p>
+          <div class="persona-priority">Core Needs</div>
+          <div class="pills">
+            <span class="pill">Bulk Actions</span>
+            <span class="pill">Fast Navigation</span>
+            <span class="pill">Data Visibility</span>
+            <span class="pill">Keyboard Shortcuts</span>
+          </div>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-header">
+          <div class="persona-avatar" style="background: var(--gray1);">✏️</div>
+          <div>
+            <h4>Secondary — Course Creator</h4>
+            <span>Simplicity + Guidance</span>
+          </div>
+        </div>
+        <div class="persona-body">
+          <p>Creates content periodically, not daily. Benefits from progressive disclosure and step-by-step flows. Easily overwhelmed by information-dense interfaces.</p>
+          <div class="persona-priority">Core Needs</div>
+          <div class="pills">
+            <span class="pill">Clear Structure</span>
+            <span class="pill">Auto-Save</span>
+            <span class="pill">Progress Cues</span>
+            <span class="pill">Inline Guidance</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── COMPETITOR ANALYSIS ─── -->
+<section class="section section--alt section-usability">
+  <div class="section-inner">
+    <span class="section-num">04</span>
+    <div class="section-label"><span class="dot"></span><span>Competitor Analysis</span></div>
+    <h2 class="section-title fade-up">Finding the<br>white space</h2>
+    <p class="section-lead fade-up delay-1">We analyzed three leading LMS platforms — identifying what to learn from, what to avoid, and where the gap in the market was widest.</p>
+
+    <div class="comp-table-wrap fade-up delay-2">
+      <table>
+        <thead>
+          <tr>
+            <th>Platform</th>
+            <th>Strengths</th>
+            <th>Weaknesses</th>
+            <th>Squadra Opportunity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Moodle</strong></td>
+            <td><span class="tag tag-green">Highly Powerful</span></td>
+            <td><span class="tag tag-red">Steep Learning Curve</span></td>
+            <td>Simplify without losing capability</td>
+          </tr>
+          <tr>
+            <td><strong>Teachable</strong></td>
+            <td><span class="tag tag-green">Easy Onboarding</span></td>
+            <td><span class="tag tag-red">Limited for Admins</span></td>
+            <td>Add depth while keeping clarity</td>
+          </tr>
+          <tr>
+            <td><strong>Coursera</strong></td>
+            <td><span class="tag tag-amber">Structured Content</span></td>
+            <td><span class="tag tag-red">Rigid Workflows</span></td>
+            <td>Flexibility with guided structure</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:2rem; padding:2rem; background:var(--green-light); border-radius:12px; border-left:3px solid var(--green);">
+      <p style="font-size:.95rem; color:var(--dark); font-style:italic; line-height:1.7;">The opportunity was clear: combine Moodle's power, Teachable's simplicity, and Coursera's structure — in a single, cohesive admin experience that respects users' time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── USER JOURNEY ─── -->
+<section class="section">
+  <div class="section-inner">
+    <span class="section-num">05</span>
+    <div class="section-label"><span class="dot"></span><span>User Journey</span></div>
+    <h2 class="section-title fade-up">Mapping the core<br>admin flow</h2>
+    <p class="section-lead fade-up delay-1">Every stage of the primary admin journey was analyzed for friction, cognitive load, and opportunities to accelerate task completion.</p>
+
+    <div class="journey-row fade-up delay-2">
+      <ol class="journey-track">
+        <li class="journey-step">
+          <span class="journey-icon">1</span>
+          <span class="journey-title">Login</span>
+        </li>
+        <li class="journey-step">
+          <span class="journey-icon">2</span>
+          <span class="journey-title">Dashboard</span>
+        </li>
+        <li class="journey-step">
+          <span class="journey-icon">3</span>
+          <span class="journey-title">Review Activity</span>
+        </li>
+        <li class="journey-step">
+          <span class="journey-icon">4</span>
+          <span class="journey-title">Create Course</span>
+        </li>
+        <li class="journey-step">
+          <span class="journey-icon">5</span>
+          <span class="journey-title">Add Content</span>
+        </li>
+        <li class="journey-step">
+          <span class="journey-icon">6</span>
+          <span class="journey-title">Publish</span>
+        </li>
+        <li class="journey-step">
+          <span class="journey-icon">7</span>
+          <span class="journey-title">Manage Courses</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STRATEGY ─── -->
+<section class="section section--dark" id="strategy">
+  <div class="section-inner">
+    <span class="section-num">06</span>
+    <div class="section-label"><span class="dot"></span><span>UX Strategy</span></div>
+    <h2 class="section-title fade-up">Four principles,<br>one direction</h2>
+    <p class="section-lead fade-up delay-1">These principles became our shared design language — guiding every decision from information architecture to micro-interaction behavior.</p>
+
+    <div class="strategy-grid fade-up delay-2">
+      <div class="strategy-card">
+        <h4><span></span>Simplicity</h4>
+        <ul>
+          <li>Progressive disclosure over all-at-once</li>
+          <li>Remove non-essential options</li>
+          <li>One primary action per screen state</li>
+          <li>Guided creation flows</li>
+        </ul>
+      </div>
+      <div class="strategy-card">
+        <h4><span></span>Efficiency</h4>
+        <ul>
+          <li>Fewer clicks to common tasks</li>
+          <li>Bulk actions for high-volume work</li>
+          <li>Persistent access to key functions</li>
+          <li>Auto-save everywhere</li>
+        </ul>
+      </div>
+      <div class="strategy-card">
+        <h4><span></span>Visibility</h4>
+        <ul>
+          <li>Surface key metrics immediately</li>
+          <li>Real-time feedback on every action</li>
+          <li>Persistent status indicators</li>
+          <li>Clear empty and error states</li>
+        </ul>
+      </div>
+      <div class="strategy-card">
+        <h4><span></span>Consistency</h4>
+        <ul>
+          <li>Shared component system</li>
+          <li>Predictable interaction patterns</li>
+          <li>Unified terminology throughout</li>
+          <li>Reduced learning curve</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── UI SCREENS ─── -->
+<section class="section" id="screens">
+  <div class="section-inner">
+    <span class="section-num">07</span>
+    <div class="section-label"><span class="dot"></span><span>UI Screens</span></div>
+    <h2 class="section-title fade-up">The three screens<br>that change everything</h2>
+    <p class="section-lead fade-up delay-1">Each screen solves a specific, well-defined problem. Every design decision has a rationale rooted in research findings.</p>
+
+    <!-- DASHBOARD -->
+    <div class="feature-block fade-up">
+      <div class="feature-header">
+        <div class="feature-num">A</div>
+        <div>
+          <h3>Dashboard</h3>
+          <p>Replaced information overload with a scannable command center. KPI cards, activity feed, and quick actions — visible without a single scroll. Admins can assess the state of their platform in under 10 seconds.</p>
+        </div>
+      </div>
+      <div class="feature-tags">
+        <span class="feature-tag">KPI Cards</span>
+        <span class="feature-tag">Activity Feed</span>
+        <span class="feature-tag">Quick Actions</span>
+        <span class="feature-tag">Real-time Status</span>
+      </div>
+      <div class="screen-wrap">
+        <img src="Case%20Study%201/Dashboard.svg" alt="Squadra Dashboard UI Screen" loading="lazy"/>
+        <div class="screen-caption">
+          <span>Dashboard — Desktop View</span>
+          <span class="screen-badge">Web Screen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD NEW COURSE -->
+    <div class="feature-block fade-up">
+      <div class="feature-header">
+        <div class="feature-num">B</div>
+        <div>
+          <h3>Course Creation</h3>
+          <p>The single biggest source of drop-off — a monolithic 30-field form — replaced with a five-step guided wizard. Each step has a single focus, reducing cognitive load dramatically. Auto-save means nothing is ever lost.</p>
+        </div>
+      </div>
+      <div class="feature-tags">
+        <span class="feature-tag">Step-by-Step Wizard</span>
+        <span class="feature-tag">Auto-Save</span>
+        <span class="feature-tag">Drag & Drop Content</span>
+        <span class="feature-tag">Progress Indicator</span>
+        <span class="feature-tag">Inline Validation</span>
+      </div>
+      <div class="screen-wrap">
+        <img src="Case%20Study%201/ADD%20NEW%20COURSE.svg" alt="Squadra Add New Course UI Screen" loading="lazy"/>
+        <div class="screen-caption">
+          <span>Course Creation — Step-by-Step Flow</span>
+          <span class="screen-badge">Web Screen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COURSE LIST -->
+    <div class="feature-block fade-up">
+      <div class="feature-header">
+        <div class="feature-num">C</div>
+        <div>
+          <h3>Course List</h3>
+          <p>Admins managing large catalogs need to find, filter, and act on courses at speed. The redesigned list combines advanced multi-dimensional filtering with bulk selection — turning a passive list into an active management surface.</p>
+        </div>
+      </div>
+      <div class="feature-tags">
+        <span class="feature-tag">Advanced Filters</span>
+        <span class="feature-tag">Full-text Search</span>
+        <span class="feature-tag">Bulk Actions</span>
+        <span class="feature-tag">Sortable Columns</span>
+        <span class="feature-tag">Saved Views</span>
+      </div>
+      <div class="screen-wrap">
+        <img src="Case%20Study%201/Course%20list.svg" alt="Squadra Course List UI Screen" loading="lazy"/>
+        <div class="screen-caption">
+          <span>Course List — Management View</span>
+          <span class="screen-badge">Web Screen</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MOBILE SCREENS ─── -->
+<section class="section section--alt">
+  <div class="section-inner">
+    <span class="section-num">08</span>
+    <div class="section-label"><span class="dot"></span><span>Responsive Design</span></div>
+    <h2 class="section-title fade-up">Designed for<br>every context</h2>
+    <p class="section-lead fade-up delay-1">Usage data showed 23% of admin access coming from mobile. Both experiences were designed intentionally — not as afterthoughts. Desktop for power, mobile for speed.</p>
+
+    <div class="two-col fade-up delay-1" style="gap:2rem; margin-bottom:2rem;">
+      <div style="padding:1.5rem; border:1px solid var(--border); border-radius:12px;">
+        <div style="font-size:.8rem; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--green); margin-bottom:.8rem;">🖥 Desktop</div>
+        <p style="font-size:.85rem; color:var(--gray1); line-height:1.7;">Persistent sidebar navigation. Multi-column data tables. Hover states and keyboard shortcuts for power users. Full filter panel visible by default.</p>
+      </div>
+      <div style="padding:1.5rem; border:1px solid var(--border); border-radius:12px;">
+        <div style="font-size:.8rem; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--green); margin-bottom:.8rem;">📱 Mobile</div>
+        <p style="font-size:.85rem; color:var(--gray1); line-height:1.7;">Collapsible bottom navigation. Card-based layouts replacing data tables. Sticky primary actions accessible with thumbs. Simplified filter drawer on demand.</p>
+      </div>
+    </div>
+
+    <div class="mobile-wrap fade-up delay-2">
+      <div class="mobile-frame">
+        <div class="iphone13">
+          <div class="iphone-screen">
+            <img src="Case%20Study%201/MOB-%20DASHBOARD.svg" alt="Squadra Mobile Dashboard" loading="lazy"/>
+          </div>
+        </div>
+        <div class="mobile-label">Dashboard — Mobile</div>
+      </div>
+      <div class="mobile-frame">
+        <div class="iphone13">
+          <div class="iphone-screen">
+            <img src="Case%20Study%201/MOB-%20COURSE%20LIST.svg" alt="Squadra Mobile Course List" loading="lazy"/>
+          </div>
+        </div>
+        <div class="mobile-label">Course List — Mobile</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DESIGN SYSTEM ─── -->
+<section class="section" id="system">
+  <div class="section-inner">
+    <span class="section-num">09</span>
+    <div class="section-label"><span class="dot"></span><span>Design System</span></div>
+    <h2 class="section-title fade-up">A unified visual<br>foundation</h2>
+    <p class="section-lead fade-up delay-1">Consistency doesn't happen by accident. Every visual decision — from color to typography to component behavior — was documented and systematized to enable scalable, coherent growth.</p>
+
+    <div class="ds-grid fade-up delay-1">
+      <div class="ds-card">
+        <div class="ds-card-body">
+          <div class="swatch-grid">
+            <div class="swatch">
+              <div class="swatch-color" style="background:#018270;"></div>
+              <div class="swatch-meta">
+                <div class="swatch-name">Primary Green</div>
+                <div class="swatch-hex">#018270</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background:#081D13;"></div>
+              <div class="swatch-meta">
+                <div class="swatch-name">Deep Forest</div>
+                <div class="swatch-hex">#081D13</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background:#E6F4F2;"></div>
+              <div class="swatch-meta">
+                <div class="swatch-name">Mint Tint</div>
+                <div class="swatch-hex">#E6F4F2</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background:#4E5954;"></div>
+              <div class="swatch-meta">
+                <div class="swatch-name">Body Gray</div>
+                <div class="swatch-hex">#4E5954</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ds-card-label">
+          <span>Colour Palette</span>
+          <em>Foundation</em>
+        </div>
+      </div>
+      <div class="ds-card">
+        <div class="ds-card-body">
+          <div class="type-specimen">
+            <div class="type-head">
+              <span class="type-name">Archivo</span>
+              <span class="type-role">Display / Headings</span>
+            </div>
+            <div class="type-sample archivo">Design for focus</div>
+            <div class="type-caption">700 / Tight hierarchy / Bold product moments</div>
+          </div>
+          <div class="type-specimen">
+            <div class="type-head">
+              <span class="type-name">IBM Plex Sans</span>
+              <span class="type-role">Body / Interface</span>
+            </div>
+            <div class="type-sample ibm">Clarity, rhythm, and readable UI copy.</div>
+            <div class="type-caption">400-600 / UI labels, paragraphs, metadata</div>
+          </div>
+        </div>
+        <div class="ds-card-label">
+          <span>Typography</span>
+          <em>Foundation</em>
+        </div>
+      </div>
+      <div class="ds-card">
+        <img class="ds-fixed-frame" src="Case%20Study%201/UI%20COMP.svg" alt="Squadra UI Components"/>
+        <div class="ds-card-label">
+          <span>Components</span>
+          <em>UI Library</em>
+        </div>
+      </div>
+      <div class="ds-card">
+        <img class="ds-fixed-frame ds-illustration-zoomout" src="Case%20Study%201/ILLustrations.svg" alt="Squadra Illustration System"/>
+        <div class="ds-card-label">
+          <span>Illustrations</span>
+          <em>Visual Language</em>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── USABILITY ─── -->
+<section class="section section--alt">
+  <div class="section-inner">
+    <span class="section-num">10</span>
+    <div class="section-label"><span class="dot"></span><span>Usability Systems</span></div>
+    <h2 class="section-title fade-up">Designed to prevent<br>failure, not just recover</h2>
+    <p class="section-lead fade-up delay-1">Great admin UX is invisible — until something goes wrong. Feedback systems were built to prevent errors and communicate status at every stage of every workflow.</p>
+
+    <div class="insight-grid fade-up delay-2">
+      <div class="insight-card">
+        <div class="ic-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.6 2.6L16.8 9"/></svg>
+        </div>
+        <h4>Inline Validation</h4>
+        <p>Field-level errors appear on blur, not on submit. Required fields are indicated upfront — not flagged after a failed attempt.</p>
+      </div>
+      <div class="insight-card">
+        <div class="ic-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0113.66-5.66"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 01-13.66 5.66"/><path d="M4 20v-5h5"/></svg>
+        </div>
+        <h4>Feedback States</h4>
+        <p>Every action has a loading, success, and error state. Toast notifications confirm actions without interrupting the user's flow.</p>
+      </div>
+      <div class="insight-card">
+        <div class="ic-icon">
+          <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 10h8"/><path d="M8 14h5"/></svg>
+        </div>
+        <h4>Empty States</h4>
+        <p>Designed as opportunities, not dead ends. Empty course lists prompt creation; empty search results suggest alternative filter combinations.</p>
+      </div>
+      <div class="insight-card">
+        <div class="ic-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3l9 4.5v6c0 4.5-3.2 7.7-9 9-5.8-1.3-9-4.5-9-9v-6L12 3z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h4>Confirmation Dialogs</h4>
+        <p>Destructive actions (delete, unpublish) require secondary confirmation. All non-destructive actions are undoable within 5 seconds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── METRICS ─── -->
+<section class="section section--green" id="outcomes">
+  <div class="section-inner">
+    <span class="section-num" style="color:rgba(255,255,255,.1);">11</span>
+    <div class="section-label" style="margin-top:-3rem;">
+      <span class="dot" style="background:#fff;"></span>
+      <span style="color:rgba(255,255,255,.7);">Success Metrics</span>
+    </div>
+    <h2 class="section-title fade-up" style="color:#fff;">Measuring what matters</h2>
+    <p class="section-lead fade-up delay-1" style="color:rgba(255,255,255,.7);">Design decisions were validated against measurable outcomes. Four metrics defined success across the redesigned experience.</p>
+
+    <div class="metrics-row fade-up delay-2">
+      <div class="metric-card" style="background:rgba(0,0,0,.24); border:none;">
+        <div class="metric-val" style="color:#fff;">↓40%</div>
+        <div class="metric-label" style="color:rgba(255,255,255,.92);">Task Completion<br>Time Reduction</div>
+      </div>
+      <div class="metric-card" style="background:rgba(0,0,0,.24); border:none;">
+        <div class="metric-val" style="color:#fff;">↓60%</div>
+        <div class="metric-label" style="color:rgba(255,255,255,.92);">Form Error<br>Rate Reduction</div>
+      </div>
+      <div class="metric-card" style="background:rgba(0,0,0,.24); border:none;">
+        <div class="metric-val" style="color:#fff;">↓35%</div>
+        <div class="metric-label" style="color:rgba(255,255,255,.92);">Course Creation<br>Drop-off Reduction</div>
+      </div>
+      <div class="metric-card" style="background:rgba(0,0,0,.32); border:none;">
+        <div class="metric-val" style="color:#fff;">85+</div>
+        <div class="metric-label" style="color:rgba(255,255,255,.92);">Target SUS Score<br>(Excellent Tier)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── OUTCOMES ─── -->
+<section class="section">
+  <div class="section-inner">
+    <span class="section-num">12</span>
+    <div class="section-label"><span class="dot"></span><span>Outcomes & Impact</span></div>
+    <h2 class="section-title fade-up">What changed</h2>
+    <p class="section-lead fade-up delay-1">The redesign produced measurable improvements across every targeted workflow — validated through usability testing with 12 participants across both user types.</p>
+
+    <div class="outcome-grid fade-up delay-2">
+      <div class="outcome-card">
+        <div class="outcome-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div>
+          <h4>Faster Workflows</h4>
+          <p>Course creation time dropped from an average of 45 minutes to 18 minutes — a 60% reduction validated in usability testing.</p>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        </div>
+        <div>
+          <h4>Better Navigation</h4>
+          <p>Navigation-related errors dropped by 72% in testing. Users found their target in fewer clicks on every measured flow.</p>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div>
+          <h4>Reduced Frustration</h4>
+          <p>SUS score improved from 52 (poor) to 88 (excellent) — a jump of 36 points, moving Squadra from below average to industry-leading.</p>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div>
+          <h4>Higher Completion</h4>
+          <p>Task completion rate rose from 61% to 94% on core flows — a 33-point increase that directly reduces support burden.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TAKEAWAYS ─── -->
+<section class="section section--dark">
+  <div class="section-inner">
+    <span class="section-num">13</span>
+    <div class="section-label"><span class="dot"></span><span>Key Takeaways</span></div>
+    <h2 class="section-title fade-up">What this project taught us</h2>
+
+    <ul class="takeaway-list fade-up delay-1">
+      <li class="takeaway-item">
+        <div class="ti-num">01</div>
+        <div class="ti-content">
+          <h4>Efficiency beats aesthetics in admin UX</h4>
+          <p>A beautiful interface that takes 10 clicks to complete a task is objectively worse than an ugly one that takes 3. When designing for power users, speed is the primary design currency — and every click removed is a win.</p>
+        </div>
+      </li>
+      <li class="takeaway-item">
+        <div class="ti-num">02</div>
+        <div class="ti-content">
+          <h4>Step-by-step flows dramatically improve completion</h4>
+          <p>Breaking complex creation tasks into stages with clear progress indicators reduced abandonment more than any other single design decision in this project. Structure creates safety.</p>
+        </div>
+      </li>
+      <li class="takeaway-item">
+        <div class="ti-num">03</div>
+        <div class="ti-content">
+          <h4>Visibility builds trust in admin tools</h4>
+          <p>When admins can see what's happening — enrollments, errors, publish status — they trust the system and work faster. Hidden information creates anxiety and workarounds that compound over time.</p>
+        </div>
+      </li>
+      <li class="takeaway-item">
+        <div class="ti-num">04</div>
+        <div class="ti-content">
+          <h4>Consistency reduces the learning curve</h4>
+          <p>A shared component system and unified interaction patterns meant that once a user understood how filtering worked on the course list, they immediately expected — and found — the same behavior in user management.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-left">
+    <div class="footer-title">Squadra LMS</div>
+    <div class="footer-sub">UX Case Study — Dashboard, Course Creation & Course Management</div>
+  </div>
+  <span class="footer-tag">UX / Product Design / Design System</span>
+</footer>
+
+<script>
+  // Scroll animation observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Active nav links on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(link => {
+          link.style.color = link.getAttribute('href') === `#${id}` ? '#018270' : '';
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => scrollObserver.observe(s));
+</script>
+
+</body>
+</html>
