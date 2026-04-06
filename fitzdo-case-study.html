@@ -67,21 +67,40 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 48px;
+    padding: 14px 48px 16px;
     background: rgba(13,13,13,0.85);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
   }
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 1.1rem;
-    color: var(--white);
-    letter-spacing: 0.05em;
-    text-decoration: none;
+  .nav-start {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
-  .nav-logo:hover { opacity: 0.9; }
-  .nav-logo span { color: var(--orange); }
+  .case-breadcrumb {
+    font-family: 'DM Mono', monospace;
+    font-size: calc(0.68rem + 4px);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .case-breadcrumb a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .case-breadcrumb a:hover {
+    color: var(--orange);
+  }
+  .case-breadcrumb-sep {
+    margin: 0 0.45em;
+    opacity: 0.45;
+  }
+  .case-breadcrumb-current {
+    color: var(--orange);
+    font-weight: 600;
+  }
   .nav-tag {
     font-family: 'DM Mono', monospace;
     font-size: 0.68rem;
@@ -1087,7 +1106,11 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="./index.html#projects" target="_top" rel="noopener" aria-label="Back to main page">FITZ<span>DO</span></a>
+  <div class="nav-start">
+    <div class="case-breadcrumb" aria-label="Breadcrumb">
+      <a href="./index.html#projects" target="_top" rel="noopener">Home</a><span class="case-breadcrumb-sep" aria-hidden="true">/</span><span class="case-breadcrumb-current">FITZDO</span>
+    </div>
+  </div>
   <div class="nav-links">
     <a href="#overview">Overview</a>
     <a href="#research">Research</a>
@@ -1108,7 +1131,6 @@
   </div>
 
   <h1 class="reveal">
-    FITZDO<br>
     <span class="outline">Healthcare</span><br>
     Portal
   </h1>

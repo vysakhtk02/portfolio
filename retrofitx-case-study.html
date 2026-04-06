@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RetrofitX — Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700&family=Barlow+Condensed:wght@400;500;600;700;800&family=Bebas+Neue&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary:    #007A6F;
+  --primary-lt: #009688;
+  --primary-dk: #005a52;
+  --sec:        #0F2626;
+  --bg:         #FFFFFF;
+  --gray:       #E0E0E0;
+  --surface:    #F4F8F7;
+  --ink:        #0F2626;
+  --ink-2:      #F4F8F7;
+  --ink-3:      #FFFFFF;
+  --ink-4:      #E8EEED;
+  --ink-5:      #E0E0E0;
+  --amber:      #007A6F;
+  --amber-lt:   #009688;
+  --amber-dk:   #005a52;
+  --white:      #ffffff;
+  --off:        #1a3a38;
+  --smoke:      rgba(15, 38, 38, 0.72);
+  --mid:        rgba(15, 38, 38, 0.52);
+  --dim:        rgba(15, 38, 38, 0.38);
+  --panel:      #0a1c1a;
+  --panel-2:    #0f2422;
+  --panel-3:    #142b28;
+  --panel-line: rgba(224, 224, 224, 0.12);
+  --dash-neon:  #4ade80;
+  --dash-teal:  #2dd4bf;
+  --dash-blue:  #7eb8ff;
+  --dash-risk:  #f0897a;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-head:    'Barlow Condensed', sans-serif;
+  --font-body:    'Archivo', sans-serif;
+  --font-num:     'IBM Plex Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--bg); color: var(--sec); overflow-x: hidden; font-weight: 400; }
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--gray); }
+::-webkit-scrollbar-thumb { background: var(--primary); }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 68px; display: flex; align-items: center; gap: 28px;
+  padding: 0 56px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gray);
+}
+.nav-links {
+  flex: 1; display: flex; justify-content: center; gap: 36px;
+  list-style: none; margin: 0; padding: 0;
+}
+.nav-links a {
+  font-family: var(--font-head); font-size: 13px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid);
+  text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--primary); }
+.nav-bc { flex-shrink: 0; }
+.breadcrumbs {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0 6px;
+  list-style: none; margin: 0; padding: 0;
+  font-family: var(--font-head); font-size: calc(11px + 4px); font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.breadcrumbs a {
+  color: var(--mid); text-decoration: none; transition: color 0.2s;
+}
+.breadcrumbs a:hover { color: var(--primary); }
+.bc-sep {
+  color: var(--gray); font-weight: 500; user-select: none; margin: 0 2px;
+}
+.breadcrumbs [aria-current="page"] {
+  color: var(--primary); font-weight: 700; max-width: none; white-space: nowrap;
+}
+
+/* HERO */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 56px 80px; overflow: hidden; background: var(--bg);
+}
+.hero::before {
+  content: ''; position: absolute; top: -200px; right: -100px;
+  width: 700px; height: 900px;
+  background: linear-gradient(160deg, rgba(0, 122, 111, 0.08) 0%, transparent 55%);
+  transform: rotate(-12deg); pointer-events: none;
+}
+.hero-grid-lines {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 122, 111, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 122, 111, 0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-vrule {
+  position: absolute; top: 0; left: 56px;
+  width: 2px; height: 100%;
+  background: linear-gradient(180deg, transparent, var(--primary) 25%, var(--primary) 75%, transparent);
+  opacity: 0.35;
+}
+.hero-bg-letters {
+  position: absolute; right: -20px; bottom: -120px;
+  font-family: var(--font-display); font-size: 480px; line-height: 1;
+  color: rgba(15, 38, 38, 0.04); pointer-events: none; user-select: none; letter-spacing: -0.02em;
+}
+.hero-plan {
+  position: absolute; right: 40px; top: 88px; bottom: 120px;
+  width: min(42vw, 440px); max-width: 100%;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none; z-index: 1;
+  opacity: 0; animation: rise 0.85s 0.45s ease forwards;
+}
+.hero-plan svg {
+  width: 100%; height: auto; max-height: min(58vh, 520px);
+  display: block;
+  filter: drop-shadow(0 12px 28px rgba(15, 38, 38, 0.08));
+}
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 28px;
+  opacity: 0; animation: rise 0.7s 0.1s ease forwards;
+  position: relative; z-index: 2;
+}
+.hero-eyebrow-bar { width: 48px; height: 2px; background: var(--primary); }
+.hero-eyebrow-txt {
+  font-family: var(--font-head); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--primary);
+}
+.hero-h1 {
+  font-family: var(--font-display); font-size: clamp(68px, 9vw, 136px);
+  line-height: 0.9; letter-spacing: 0.01em; text-transform: uppercase;
+  color: var(--sec); max-width: min(52vw, 800px); margin-bottom: 36px;
+  opacity: 0; animation: rise 0.7s 0.2s ease forwards;
+  position: relative; z-index: 2;
+}
+.hero-h1 .accent { color: var(--primary); }
+.hero-bottom {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+  opacity: 0; animation: rise 0.7s 0.32s ease forwards;
+  position: relative; z-index: 2;
+}
+.hero-desc { font-size: 15px; font-weight: 300; color: var(--smoke); line-height: 1.8; max-width: 380px; }
+.hero-stats { display: flex; gap: 48px; flex-shrink: 0; }
+.hstat-val { font-family: var(--font-num); font-size: 52px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--primary); line-height: 1; letter-spacing: -0.02em; }
+.hstat-lbl { font-family: var(--font-head); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); margin-top: 4px; }
+.hero-cut { position: absolute; bottom: -1px; left: 0; right: 0; height: 72px; background: var(--bg); clip-path: polygon(0 100%, 100% 0, 100% 100%); }
+
+/* SHARED */
+.wrap { max-width: 1200px; margin: 0 auto; padding: 100px 56px; }
+.eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.eyebrow-bar { width: 36px; height: 2px; background: var(--primary); flex-shrink: 0; }
+.eyebrow-txt { font-family: var(--font-head); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--primary); }
+.sec-title { font-family: var(--font-display); font-size: clamp(48px, 6vw, 84px); line-height: 0.92; text-transform: uppercase; margin-bottom: 24px; letter-spacing: 0.02em; color: var(--sec); }
+.sec-lead { font-size: 15px; font-weight: 300; color: var(--smoke); line-height: 1.8; max-width: 520px; margin-bottom: 60px; }
+
+/* PROBLEM */
+#problem { background: var(--bg); }
+.prob-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.prob-cards { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
+.pcard {
+  background: var(--ink-3); border: 1px solid var(--gray); border-left: 3px solid var(--gray);
+  padding: 28px 32px; transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+  position: relative; overflow: hidden; cursor: default;
+}
+.pcard:hover { border-color: var(--primary); border-left-color: var(--primary); box-shadow: 0 8px 32px rgba(0, 122, 111, 0.08); transform: translateX(4px); }
+.pcard-n { font-family: var(--font-num); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--primary); letter-spacing: 0.08em; margin-bottom: 8px; }
+.pcard h3 { font-family: var(--font-head); font-size: 19px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; color: var(--sec); }
+.pcard p { font-size: 13px; font-weight: 300; color: var(--smoke); line-height: 1.7; }
+.prob-right { position: sticky; top: 100px; }
+.prob-stat {
+  background: var(--primary); padding: 44px 40px; margin-bottom: 20px;
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+}
+.prob-stat-n { font-family: var(--font-num); font-size: 88px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; color: var(--white); letter-spacing: -0.03em; }
+.prob-stat-l { font-family: var(--font-head); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.88); margin-top: 6px; }
+.prob-quote { border-left: 3px solid var(--primary); padding: 22px 28px; background: var(--surface); border: 1px solid var(--gray); border-left-width: 3px; border-left-color: var(--primary); }
+.prob-qt { font-family: var(--font-head); font-size: 17px; font-weight: 600; font-style: italic; color: var(--sec); line-height: 1.55; margin-bottom: 12px; }
+.prob-qs { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); }
+
+/* SOLUTION */
+#solution { background: var(--ink-2); }
+.sol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.sol-list { display: flex; flex-direction: column; }
+.sol-item { display: flex; gap: 18px; padding: 18px 0; border-bottom: 1px solid var(--gray); }
+.sol-item:last-child { border-bottom: none; }
+.sol-check { width: 26px; height: 26px; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; font-weight: 700; line-height: 1; color: var(--primary); margin-top: 2px; }
+.sol-item-t { font-family: var(--font-head); font-size: 15px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; color: var(--sec); }
+.sol-item-d { font-size: 13px; font-weight: 300; color: var(--smoke); line-height: 1.65; }
+
+/* dashboard mock — dark theme (refined) */
+.dash {
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(0, 122, 111, 0.14) 0%, transparent 55%),
+    linear-gradient(168deg, #0f1a18 0%, #080d0c 42%, #040706 100%);
+  border: 1px solid rgba(0, 122, 111, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 28px 56px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(0, 0, 0, 0.4);
+  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 28px 100%, 0 calc(100% - 28px));
+  overflow: hidden;
+}
+.dash-top {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+  padding: 16px 22px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 1px 0 rgba(0, 122, 111, 0.12);
+}
+.dash-top-t {
+  font-family: var(--font-head); font-size: 12px; font-weight: 800;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(248, 250, 252, 0.96);
+}
+.dash-live {
+  display: flex; align-items: center; gap: 8px; font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: #4ade80; font-weight: 700;
+}
+.dash-live::before {
+  content:''; width: 7px; height: 7px; border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.75), 0 0 20px rgba(74, 222, 128, 0.25);
+  animation: blink 1.4s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.32} }
+.dash-bd { padding: 0; }
+.dash-kpis {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  margin: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.dash-kpi {
+  padding: 20px 22px;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  transition: background 0.22s ease, box-shadow 0.22s ease;
+}
+.dash-kpi:nth-child(2n) { border-right: none; }
+.dash-kpi:nth-child(n+3) { border-bottom: none; }
+.dash-kpi:hover {
+  background: rgba(0, 122, 111, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(0, 122, 111, 0.15);
+}
+.dash-kl {
+  font-family: var(--font-head); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(248, 250, 252, 0.42); margin-bottom: 10px;
+}
+.dash-kv {
+  font-family: var(--font-num); font-size: clamp(26px, 3.2vw, 32px);
+  font-weight: 600; font-variant-numeric: tabular-nums;
+  color: rgba(248, 250, 252, 0.98); letter-spacing: -0.03em; line-height: 1.05;
+}
+.dash-kv .dash-unit {
+  font-size: 11px; font-weight: 500;
+  color: rgba(248, 250, 252, 0.4); letter-spacing: 0.02em;
+  margin-left: 6px;
+}
+.dash-kv.g { color: #4ade80; text-shadow: 0 0 24px rgba(74, 222, 128, 0.2); }
+.dash-kv.a { color: #5eead4; }
+.dash-kpi-pad {
+  padding: 20px 22px 22px;
+  background: rgba(0, 0, 0, 0.15);
+}
+.dash-bars { display: flex; flex-direction: column; gap: 16px; }
+.dash-br-meta {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 7px; font-size: 9px;
+  color: rgba(248, 250, 252, 0.4); font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+.dash-br-meta span:last-child {
+  font-family: var(--font-num); font-variant-numeric: tabular-nums;
+  font-weight: 700; letter-spacing: 0.04em; color: rgba(248, 250, 252, 0.58);
+}
+.dash-br-track {
+  height: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.dash-br-fill {
+  height: 100%; min-width: 2px;
+  background: linear-gradient(90deg, #0d9488, #2dd4bf);
+  border-radius: 3px;
+  box-shadow: 0 0 12px rgba(45, 212, 191, 0.25);
+}
+.dash-br-fill.g {
+  background: linear-gradient(90deg, #16a34a, #4ade80);
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.2);
+}
+.dash-br-fill.r {
+  background: linear-gradient(90deg, #be123c, #fb7185);
+  box-shadow: 0 0 10px rgba(251, 113, 133, 0.15);
+}
+.dash-br-fill.b { background: linear-gradient(90deg, #2563eb, #7eb8ff); box-shadow: 0 0 12px rgba(126, 184, 255, 0.2); }
+.dash-carbon {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 20px 22px 22px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0.12) 100%);
+}
+.dash-carbon-h {
+  font-family: var(--font-head); font-size: 10px; font-weight: 800;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(248, 250, 252, 0.48); margin-bottom: 16px;
+}
+.dash-scopes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+.dash-sc {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 12px 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.dash-sc:hover {
+  border-color: rgba(0, 122, 111, 0.35);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.dash-sc-l {
+  font-family: var(--font-head); font-size: 8px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(248, 250, 252, 0.45); display: block; margin-bottom: 6px;
+}
+.dash-sc-v {
+  font-family: var(--font-num); font-size: 17px; font-weight: 600;
+  font-variant-numeric: tabular-nums; color: rgba(248, 250, 252, 0.95);
+}
+.dash-sc-v small { font-size: 10px; font-weight: 500; color: rgba(248, 250, 252, 0.42); margin-left: 2px; }
+.dash-spark {
+  height: 3px; margin-top: 10px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 122, 111, 0.5) 30%, #4ade80);
+  opacity: 0.95;
+}
+.dash-spark.b { background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.4) 35%, #7eb8ff); }
+.dash-spark.g2 { background: linear-gradient(90deg, #005a52, #4ade80 50%, #009688); }
+.dash-sch-l {
+  font-family: var(--font-head); font-size: 8px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(248, 250, 252, 0.42); margin-bottom: 12px;
+}
+.dash-sch-bars {
+  display: flex; align-items: stretch; justify-content: space-between;
+  gap: 14px; height: 78px; padding: 0 4px;
+}
+.dash-sch-col {
+  flex: 1; display: flex; flex-direction: column; justify-content: flex-end;
+  align-items: center; gap: 8px; min-width: 0; max-width: 52px;
+}
+.dash-sch-track {
+  width: 100%; flex: 1; min-height: 46px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 6px 6px 3px 3px;
+  display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.dash-sch-f {
+  width: 100%; border-radius: 5px 5px 0 0;
+  background: linear-gradient(180deg, #4ade80 0%, #007A6F 100%);
+  min-height: 4px;
+  box-shadow: 0 -2px 12px rgba(74, 222, 128, 0.15);
+}
+.dash-sch-f.alt { background: linear-gradient(180deg, #7eb8ff 0%, #2563eb 100%); box-shadow: 0 -2px 12px rgba(126, 184, 255, 0.12); }
+.dash-sch-f.wide { background: linear-gradient(180deg, #5eead4 0%, #007A6F 100%); box-shadow: 0 -2px 12px rgba(94, 234, 212, 0.12); }
+.dash-sch-col span {
+  font-family: var(--font-num); font-size: 9px; font-weight: 600;
+  font-variant-numeric: tabular-nums; color: rgba(248, 250, 252, 0.38);
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+/* FEATURES */
+#features { background: var(--bg); }
+.feat-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 52px; gap: 40px; }
+.feat-head .sec-title { margin-bottom: 0; }
+.feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.fcard {
+  background: var(--ink-3); padding: 36px 30px; position: relative; overflow: hidden;
+  transition: background 0.25s, border-color 0.25s; border: 1px solid var(--gray); border-top: 2px solid var(--gray); cursor: default;
+}
+.fcard:hover { background: var(--surface); border-color: var(--primary); }
+.fcard-bg { font-family: var(--font-display); font-size: 60px; color: rgba(15, 38, 38, 0.05); line-height: 1; position: absolute; top: 14px; right: 18px; user-select: none; transition: color 0.25s; }
+.fcard:hover .fcard-bg { color: rgba(0, 122, 111, 0.12); }
+.ficon { width: 42px; height: 42px; border: 1px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 18px; color: var(--primary); transition: background 0.2s, color 0.2s; }
+.fcard:hover .ficon { background: var(--primary); color: var(--white); }
+.fcard h3 { font-family: var(--font-head); font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 11px; line-height: 1.25; color: var(--sec); }
+.fcard p { font-size: 13px; font-weight: 300; color: var(--smoke); line-height: 1.7; }
+.ftags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 16px; }
+.ftag { font-family: var(--font-head); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); border: 1px solid rgba(0, 122, 111, 0.28); padding: 3px 8px; }
+
+/* hero feature card */
+.fhero {
+  grid-column: span 3; background: var(--primary);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+  padding: 48px; border: 1px solid var(--primary-dk); border-top: none; position: relative; overflow: hidden;
+}
+.fhero::before { content:''; position:absolute; top:-80px; right:-80px; width:280px; height:280px; border-radius:50%; background:rgba(255,255,255,0.08); }
+.fhero:hover { background: var(--primary-lt); border-color: var(--primary-lt); }
+.fhero .fcard-bg { color: rgba(255,255,255,0.08); }
+.fhero:hover .fcard-bg { color: rgba(255,255,255,0.12); }
+.fhero h3 { color: var(--white); font-size: 24px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+.fhero p { color: rgba(255,255,255,0.88); font-size: 14px; }
+.fhero .ftag { color: var(--white); border-color: rgba(255,255,255,0.35); }
+.fhero .ficon { border-color: var(--white); color: var(--white); }
+.fhero:hover .ficon { background: var(--white); color: var(--primary); }
+.fhero .fcard-bg { font-size: 88px; position: static; color: rgba(255,255,255,0.1); }
+
+.floor-bars { }
+.floor-bars-lbl { font-family: var(--font-head); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 14px; }
+.fbrow { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+.fblbl { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--white); width: 54px; letter-spacing: 0.05em; }
+.fbtrack { flex: 1; height: 6px; background: rgba(255,255,255,0.16); border-radius: 2px; overflow: hidden; }
+.fbfill { height: 100%; background: linear-gradient(90deg, var(--dash-teal), rgba(255,255,255,0.95)); border-radius: 2px; }
+.fbpct { font-family: var(--font-num); font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--white); width: 40px; text-align: right; }
+.fhero-note { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* FLOW */
+#flow { background: var(--ink-2); }
+.flow-layout { display: grid; grid-template-columns: 340px 1fr; gap: 80px; align-items: start; }
+.flow-sticky { position: sticky; top: 96px; }
+.flow-bign { font-family: var(--font-num); font-size: 180px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; color: rgba(15, 38, 38, 0.06); user-select: none; margin-bottom: -48px; letter-spacing: -0.04em; }
+.flow-steps { display: flex; flex-direction: column; }
+.fstep { display: grid; grid-template-columns: 64px 1fr; gap: 24px; padding: 26px 0; border-bottom: 1px solid var(--gray); }
+.fstep:last-child { border-bottom: none; }
+.fstep-lhs { display: flex; flex-direction: column; align-items: center; }
+.fstep-n {
+  width: 48px; height: 48px; background: var(--ink-3); border: 1px solid var(--gray);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-num); font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--mid); flex-shrink: 0;
+  transition: background 0.25s, color 0.25s, border-color 0.25s;
+}
+.fstep:hover .fstep-n { background: var(--primary); color: var(--white); border-color: var(--primary); }
+.fstep-conn { flex: 1; width: 1px; background: var(--gray); margin-top: 8px; }
+.fstep:last-child .fstep-conn { display: none; }
+.fstep-body { padding-top: 10px; }
+.fstep-phase { font-family: var(--font-head); font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--primary); margin-bottom: 5px; }
+.fstep-body h3 { font-family: var(--font-head); font-size: 19px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 9px; transition: color 0.2s; color: var(--sec); }
+.fstep:hover .fstep-body h3 { color: var(--primary); }
+.fstep-body p { font-size: 13px; font-weight: 300; color: var(--smoke); line-height: 1.75; }
+.fchips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+.fchip { font-family: var(--font-head); font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); background: var(--ink-3); border: 1px solid var(--gray); padding: 3px 9px; }
+
+/* PRODUCT UI SCREENS */
+#product-ui {
+  background: var(--bg); border-top: 1px solid var(--gray);
+}
+.ui-intro { margin-bottom: 56px; max-width: 640px; }
+.ui-screens { display: flex; flex-direction: column; gap: 48px; }
+.ui-screen {
+  border: 1px solid var(--gray);
+  background: var(--ink-3);
+  overflow: visible;
+  box-shadow: 0 10px 32px rgba(15, 38, 38, 0.06);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.ui-screen:hover {
+  border-color: rgba(0, 122, 111, 0.4);
+  box-shadow: 0 14px 40px rgba(0, 122, 111, 0.1);
+}
+.ui-screen-head {
+  padding: 26px 32px 24px;
+  border-bottom: 1px solid var(--gray);
+  background: var(--surface);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 28px;
+  align-items: start;
+}
+.ui-screen-n {
+  grid-row: 1 / span 2;
+  font-family: var(--font-num); font-size: 34px; font-weight: 600;
+  font-variant-numeric: tabular-nums; line-height: 1;
+  color: var(--primary); letter-spacing: -0.03em; padding-top: 2px;
+}
+.ui-screen-title {
+  font-family: var(--font-head); font-size: 19px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--sec); margin: 0 0 8px;
+  line-height: 1.25;
+}
+.ui-screen-desc {
+  font-size: 14px; font-weight: 300; color: var(--smoke);
+  line-height: 1.75; margin: 0; max-width: 800px;
+}
+.ui-screen-scroll {
+  height: auto;
+  max-height: none;
+  min-height: 0;
+  overflow-x: hidden;
+  background: var(--surface);
+}
+.ui-screen-scroll img {
+  width: 100%; height: auto; display: block;
+}
+#ui-screen-04 .ui-screen-scroll,
+#ui-screen-05 .ui-screen-scroll,
+#ui-screen-06 .ui-screen-scroll,
+#ui-screen-07 .ui-screen-scroll {
+  height: 680px;
+  max-height: 680px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* IMPACT */
+#impact { background: var(--primary); }
+.impact-wrap { max-width: 1200px; margin: 0 auto; padding: 100px 56px; }
+.impact-wrap .eyebrow-bar { background: var(--white); }
+.impact-wrap .eyebrow-txt { color: var(--white); }
+.impact-wrap .sec-title { color: var(--white); }
+.impact-wrap .sec-lead { color: rgba(255,255,255,0.85); }
+.imp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 52px; }
+.imp-card { background: rgba(255,255,255,0.12); padding: 32px 24px; transition: background 0.2s; }
+.imp-card:hover { background: rgba(255,255,255,0.18); }
+.imp-v { font-family: var(--font-num); font-size: 60px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; color: var(--white); margin-bottom: 8px; letter-spacing: -0.02em; }
+.imp-l { font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.82); line-height: 1.6; }
+.out-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; margin-top: 2px; }
+.out-card { background: rgba(255,255,255,0.1); padding: 28px; transition: background 0.2s; }
+.out-card:hover { background: rgba(255,255,255,0.16); }
+.out-t { font-family: var(--font-head); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--white); margin-bottom: 9px; }
+.out-card p { font-size: 13px; color: rgba(255,255,255,0.78); line-height: 1.65; }
+
+/* UX */
+#ux { background: var(--bg); }
+.ux-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 52px; }
+.uxcard { background: var(--ink-3); padding: 44px 40px; position: relative; overflow: hidden; transition: background 0.25s, border-color 0.25s; border: 1px solid var(--gray); border-top: 2px solid var(--gray); cursor: default; }
+.uxcard:hover { background: var(--surface); border-color: var(--primary); }
+.uxcard-n { font-family: var(--font-num); font-size: 110px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 0.9; color: rgba(15, 38, 38, 0.05); position: absolute; bottom: -18px; right: 18px; user-select: none; transition: color 0.25s; letter-spacing: -0.03em; }
+.uxcard:hover .uxcard-n { color: rgba(0, 122, 111, 0.1); }
+.ux-ico { font-size: 28px; margin-bottom: 18px; display: block; transition: transform 0.25s; }
+.uxcard:hover .ux-ico { transform: scale(1.1); }
+.uxcard h3 { font-family: var(--font-head); font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; color: var(--sec); }
+.uxcard p { font-size: 13px; font-weight: 300; color: var(--smoke); line-height: 1.75; position: relative; z-index: 1; }
+
+/* FOOTER */
+footer { background: var(--surface); border-top: 1px solid var(--gray); padding: 56px 56px 36px; }
+.ft-in { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; }
+.ft-bar { width: 72px; height: 2px; background: var(--primary); }
+.ft-tag { font-family: var(--font-head); font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); }
+.ft-div { width: 1px; height: 28px; background: var(--gray); }
+.ft-copy { font-size: 11px; color: var(--dim); letter-spacing: 0.06em; }
+
+/* ANIMATIONS */
+@keyframes rise { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+.d1{transition-delay:0.1s} .d2{transition-delay:0.2s} .d3{transition-delay:0.3s} .d4{transition-delay:0.4s}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  nav{padding:0 20px;flex-wrap:wrap;height:auto;min-height:68px;gap:12px 16px;padding-top:12px;padding-bottom:12px}
+  .nav-links{display:none}
+  .nav-bc{width:100%;justify-content:flex-start}
+  .breadcrumbs{font-size:calc(10px + 4px)}
+  .hero{padding:68px 24px 72px}
+  .hero-plan{display:none}
+  .hero-h1{max-width:100%}
+  .wrap,.impact-wrap{padding:72px 24px}
+  .prob-layout,.sol-grid,.feat-head,.flow-layout,.ux-grid{grid-template-columns:1fr;gap:40px}
+  .ui-screens{gap:36px}
+  .ui-screen-head{padding:20px 20px 18px;grid-template-columns:1fr;gap:12px}
+  .ui-screen-n{grid-row:auto;font-size:28px}
+  .prob-right{position:static} .flow-sticky{position:static}
+  .feat-grid{grid-template-columns:1fr}
+  .fhero{grid-column:span 1;grid-template-columns:1fr;gap:28px}
+  .imp-grid{grid-template-columns:1fr 1fr} .out-grid{grid-template-columns:1fr}
+  footer{padding:48px 24px 32px}
+}
+@media(max-width:520px){
+  .dash-scopes{grid-template-columns:1fr}
+  .dash-sch-bars{gap:8px;height:68px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-bc" role="navigation" aria-label="Breadcrumb">
+    <ol class="breadcrumbs">
+      <li><a href="./index.html#projects" target="_top" rel="noopener">Home</a></li>
+      <li class="bc-sep" aria-hidden="true">/</li>
+      <li aria-current="page">RetrofitX</li>
+    </ol>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#flow">User Flow</a></li>
+    <li><a href="#product-ui">Screens</a></li>
+    <li><a href="#impact">Impact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-lines"></div>
+  <div class="hero-vrule"></div>
+  <div class="hero-bg-letters">RX</div>
+
+  <div class="hero-plan" aria-hidden="true">
+    <svg viewBox="0 0 320 378" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="hero-twr-core" width="5" height="5" patternUnits="userSpaceOnUse">
+          <path d="M0 5 L5 0" stroke="#0F2626" stroke-opacity="0.18" stroke-width="0.45"/>
+        </pattern>
+        <pattern id="hero-twr-office" width="12" height="12" patternUnits="userSpaceOnUse">
+          <path d="M-1 13 L13 -1" stroke="#007A6F" stroke-opacity="0.07" stroke-width="0.5"/>
+        </pattern>
+        <linearGradient id="hero-twr-sheet" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#FFFFFF"/>
+          <stop offset="100%" stop-color="#F2F6F5"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#hero-twr-sheet)" stroke="#E0E0E0" stroke-width="1" d="M0 8 L312 8 L320 16 L320 370 L8 370 L0 362 Z"/>
+      <text x="18" y="30" fill="#0F2626" fill-opacity="0.78" font-family="'Barlow Condensed', sans-serif" font-size="12" font-weight="800" letter-spacing="0.16em">HIGH-RISE</text>
+      <text x="18" y="44" fill="#0F2626" fill-opacity="0.5" font-family="'Barlow Condensed', sans-serif" font-size="9" font-weight="700" letter-spacing="0.18em">TYPICAL FLOOR PLAN</text>
+      <text x="18" y="58" fill="#007A6F" font-family="'IBM Plex Sans', sans-serif" font-size="7" font-weight="500">Tower · office plate · illustrative</text>
+      <rect x="38" y="84" width="244" height="212" rx="2" fill="#FAFCFB" stroke="#007A6F" stroke-width="1.75"/>
+      <rect x="46" y="92" width="228" height="196" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="5 4"/>
+      <text x="160" y="104" text-anchor="middle" fill="#007A6F" fill-opacity="0.45" font-family="'Barlow Condensed', sans-serif" font-size="6" font-weight="700" letter-spacing="0.2em">NORTH · CURTAIN WALL</text>
+      <rect x="46" y="112" width="228" height="56" fill="url(#hero-twr-office)" stroke="#007A6F" stroke-opacity="0.22" stroke-width="0.65"/>
+      <line x1="74" y1="112" x2="74" y2="168" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="102" y1="112" x2="102" y2="168" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="130" y1="112" x2="130" y2="168" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="190" y1="112" x2="190" y2="168" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="218" y1="112" x2="218" y2="168" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="246" y1="112" x2="246" y2="168" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/>
+      <rect x="46" y="244" width="228" height="44" fill="url(#hero-twr-office)" stroke="#007A6F" stroke-opacity="0.22" stroke-width="0.65"/>
+      <line x1="74" y1="244" x2="74" y2="288" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="102" y1="244" x2="102" y2="288" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="130" y1="244" x2="130" y2="288" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="190" y1="244" x2="190" y2="288" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="218" y1="244" x2="218" y2="288" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="246" y1="244" x2="246" y2="288" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/>
+      <rect x="46" y="168" width="76" height="76" fill="url(#hero-twr-office)" stroke="#007A6F" stroke-opacity="0.22" stroke-width="0.65"/>
+      <line x1="46" y1="192" x2="122" y2="192" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="46" y1="216" x2="122" y2="216" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="46" y1="240" x2="122" y2="240" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/>
+      <rect x="198" y="168" width="76" height="76" fill="url(#hero-twr-office)" stroke="#007A6F" stroke-opacity="0.22" stroke-width="0.65"/>
+      <line x1="198" y1="192" x2="274" y2="192" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="198" y1="216" x2="274" y2="216" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/><line x1="198" y1="240" x2="274" y2="240" stroke="#007A6F" stroke-opacity="0.15" stroke-width="0.5"/>
+      <rect x="122" y="168" width="76" height="76" fill="url(#hero-twr-core)" stroke="#0F2626" stroke-opacity="0.55" stroke-width="1.2"/>
+      <rect x="128" y="174" width="20" height="64" fill="rgba(0,122,111,0.12)" stroke="#007A6F" stroke-width="0.6"/>
+      <rect x="152" y="174" width="16" height="64" fill="rgba(15,38,38,0.08)" stroke="#0F2626" stroke-opacity="0.35" stroke-width="0.6"/>
+      <rect x="172" y="174" width="20" height="64" fill="rgba(0,122,111,0.12)" stroke="#007A6F" stroke-width="0.6"/>
+      <text x="160" y="208" text-anchor="middle" fill="#0F2626" fill-opacity="0.55" font-family="'Barlow Condensed', sans-serif" font-size="6" font-weight="700" letter-spacing="0.1em">CORE</text>
+      <text x="160" y="218" text-anchor="middle" fill="#0F2626" fill-opacity="0.38" font-family="'IBM Plex Sans', sans-serif" font-size="5">Elev. · stair · MEP</text>
+      <g fill="#007A6F" fill-opacity="0.35">
+        <circle cx="60" cy="128" r="1.8"/><circle cx="88" cy="128" r="1.8"/><circle cx="116" cy="128" r="1.8"/><circle cx="204" cy="128" r="1.8"/><circle cx="232" cy="128" r="1.8"/><circle cx="260" cy="128" r="1.8"/>
+        <circle cx="60" cy="260" r="1.8"/><circle cx="88" cy="260" r="1.8"/><circle cx="116" cy="260" r="1.8"/><circle cx="204" cy="260" r="1.8"/><circle cx="232" cy="260" r="1.8"/><circle cx="260" cy="260" r="1.8"/>
+        <circle cx="62" cy="180" r="1.8"/><circle cx="62" cy="206" r="1.8"/><circle cx="62" cy="232" r="1.8"/><circle cx="106" cy="180" r="1.8"/><circle cx="106" cy="232" r="1.8"/>
+        <circle cx="256" cy="180" r="1.8"/><circle cx="256" cy="206" r="1.8"/><circle cx="256" cy="232" r="1.8"/><circle cx="212" cy="180" r="1.8"/><circle cx="212" cy="232" r="1.8"/>
+      </g>
+      <text x="82" y="186" fill="#007A6F" fill-opacity="0.4" font-family="'Barlow Condensed', sans-serif" font-size="5.5" font-weight="700" letter-spacing="0.08em" transform="rotate(-90 82 206)">LEASE</text>
+      <text x="238" y="186" fill="#007A6F" fill-opacity="0.4" font-family="'Barlow Condensed', sans-serif" font-size="5.5" font-weight="700" letter-spacing="0.08em" transform="rotate(90 238 206)">LEASE</text>
+      <rect x="154" y="286" width="12" height="6" fill="none" stroke="#007A6F" stroke-opacity="0.5" stroke-width="0.75"/>
+      <text x="160" y="302" text-anchor="middle" fill="#0F2626" fill-opacity="0.4" font-family="'Barlow Condensed', sans-serif" font-size="5.5" font-weight="700" letter-spacing="0.12em">LOBBY / ENTRY</text>
+      <g transform="translate(250,88)">
+        <polygon points="10,0 14,20 6,20" fill="#0F2626" fill-opacity="0.5"/>
+        <text x="0" y="32" fill="#0F2626" fill-opacity="0.42" font-family="'Barlow Condensed', sans-serif" font-size="9" font-weight="700">N</text>
+      </g>
+      <line x1="18" y1="348" x2="78" y2="348" stroke="#0F2626" stroke-opacity="0.32" stroke-width="2"/>
+      <text x="18" y="362" fill="#0F2626" fill-opacity="0.38" font-family="'IBM Plex Sans', sans-serif" font-size="6.5" font-weight="500">0 — 24m</text>
+      <text x="168" y="362" fill="#0F2626" fill-opacity="0.32" font-family="'IBM Plex Sans', sans-serif" font-size="6" font-weight="400">Diagram not to scale</text>
+    </svg>
+  </div>
+
+  <div class="hero-eyebrow">
+    <div class="hero-eyebrow-bar"></div>
+    <span class="hero-eyebrow-txt">Product Case Study — 2024</span>
+  </div>
+  <h1 class="hero-h1">Retrofit<span class="accent">X</span><br>Sustainable<br>Buildings</h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">A data-driven platform transforming how commercial building owners track, benchmark, and plan emissions reduction — from portfolio overview to individual floor-level retrofits.</p>
+    <div class="hero-stats">
+      <div><div class="hstat-val">40%</div><div class="hstat-lbl">GHG from Buildings</div></div>
+      <div><div class="hstat-val">07</div><div class="hstat-lbl">Flow Steps</div></div>
+      <div><div class="hstat-val">∞</div><div class="hstat-lbl">Floor Scenarios</div></div>
+    </div>
+  </div>
+  <div class="hero-cut"></div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="wrap">
+    <div class="prob-layout">
+      <div>
+        <div class="eyebrow reveal"><div class="eyebrow-bar"></div><span class="eyebrow-txt">The Challenge</span></div>
+        <h2 class="sec-title reveal">The<br>Emissions<br>Crisis</h2>
+        <p class="sec-lead reveal">Commercial real estate accounts for a staggering share of global carbon output — yet the tools to manage and reduce these emissions remain fragmented, manual, and inaccessible.</p>
+        <div class="prob-cards">
+          <div class="pcard reveal d1"><div class="pcard-n">01 —</div><h3>Massive Carbon Footprint</h3><p>Commercial buildings drive nearly 40% of global GHG emissions. Regulatory pressure is intensifying, yet most owners lack real-time visibility into their exposure or compliance status.</p></div>
+          <div class="pcard reveal d2"><div class="pcard-n">02 —</div><h3>No Centralized Platform</h3><p>Owners juggle disconnected spreadsheets, manual audits, and siloed consultant reports. There's no unified system to track performance, benchmark against peers, or simulate retrofit scenarios.</p></div>
+          <div class="pcard reveal d3"><div class="pcard-n">03 —</div><h3>Complex Decision-Making</h3><p>Every retrofit involves tangled financial trade-offs, physical risk assessments, lease constraints, and long-term planning — requiring expensive experts at every step.</p></div>
+        </div>
+      </div>
+      <div class="prob-right">
+        <div class="prob-stat reveal"><div class="prob-stat-n">40%</div><div class="prob-stat-l">of global GHG<br>emissions from buildings</div></div>
+        <div class="prob-quote reveal"><div class="prob-qt">"We knew what we wanted to achieve, but had no way to model which interventions would have the greatest impact — floor by floor."</div><div class="prob-qs">— Head of Sustainability, Commercial Property Group</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section id="solution">
+  <div class="wrap">
+    <div class="sol-grid">
+      <div>
+        <div class="eyebrow reveal"><div class="eyebrow-bar"></div><span class="eyebrow-txt">The Solution</span></div>
+        <h2 class="sec-title reveal">One<br>Platform.<br>Every<br>Decision.</h2>
+        <p class="sec-lead reveal" style="margin-bottom:28px;">RetrofitX centralizes all sustainability intelligence — from raw building data to floor-level transition plans — into a single analytical workspace for asset managers.</p>
+        <div class="sol-list reveal">
+          <div class="sol-item"><div class="sol-check">✓</div><div><div class="sol-item-t">Data-Driven Insights</div><div class="sol-item-d">Real-time emissions tracking and automated benchmarking against industry leaders.</div></div></div>
+          <div class="sol-item"><div class="sol-check">✓</div><div><div class="sol-item-t">Floor-Level Planning</div><div class="sol-item-d">Customize retrofit strategies floor by floor with live impact simulation.</div></div></div>
+          <div class="sol-item"><div class="sol-check">✓</div><div><div class="sol-item-t">Scalable Strategy</div><div class="sol-item-d">From single properties to global portfolios — consistent intelligence at every scale.</div></div></div>
+          <div class="sol-item"><div class="sol-check">✓</div><div><div class="sol-item-t">Scenario Comparison</div><div class="sol-item-d">Model unlimited retrofit combinations and compare them side-by-side before committing capital.</div></div></div>
+        </div>
+      </div>
+      <div class="dash reveal">
+        <div class="dash-top"><span class="dash-top-t">Portfolio Dashboard</span><span class="dash-live">Live</span></div>
+        <div class="dash-bd">
+          <div class="dash-kpis">
+            <div class="dash-kpi"><div class="dash-kl">Total Emissions</div><div class="dash-kv">4,820<span class="dash-unit">tCO₂e</span></div></div>
+            <div class="dash-kpi"><div class="dash-kl">Reduction YTD</div><div class="dash-kv g">↓ 18.3%</div></div>
+            <div class="dash-kpi"><div class="dash-kl">5-Year Target</div><div class="dash-kv a">−50%</div></div>
+            <div class="dash-kpi"><div class="dash-kl">Properties</div><div class="dash-kv">24</div></div>
+          </div>
+          <div class="dash-kpi-pad">
+            <div class="dash-bars">
+              <div><div class="dash-br-meta"><span>5-Year Progress</span><span>37%</span></div><div class="dash-br-track"><div class="dash-br-fill" style="width:37%"></div></div></div>
+              <div><div class="dash-br-meta"><span>Energy Efficiency</span><span>72/100</span></div><div class="dash-br-track"><div class="dash-br-fill g" style="width:72%"></div></div></div>
+              <div><div class="dash-br-meta"><span>Physical Risk</span><span>Low</span></div><div class="dash-br-track"><div class="dash-br-fill r" style="width:22%"></div></div></div>
+              <div><div class="dash-br-meta"><span>Benchmark Rank</span><span>Top 28%</span></div><div class="dash-br-track"><div class="dash-br-fill" style="width:72%"></div></div></div>
+            </div>
+          </div>
+          <div class="dash-carbon">
+            <div class="dash-carbon-h">Carbon accounting</div>
+            <div class="dash-scopes">
+              <div class="dash-sc"><span class="dash-sc-l">Scope 1 · Direct</span><span class="dash-sc-v">1.2<small>Mt</small></span><div class="dash-spark g2"></div></div>
+              <div class="dash-sc"><span class="dash-sc-l">Scope 2 · Energy</span><span class="dash-sc-v">0.8<small>Mt</small></span><div class="dash-spark b"></div></div>
+              <div class="dash-sc"><span class="dash-sc-l">Scope 3 · Value chain</span><span class="dash-sc-v">4.1<small>Mt</small></span><div class="dash-spark"></div></div>
+            </div>
+            <div class="dash-sch-l">Emissions by scope</div>
+            <div class="dash-sch-bars">
+              <div class="dash-sch-col">
+                <div class="dash-sch-track"><div class="dash-sch-f" style="height:45%"></div></div>
+                <span>S1</span>
+              </div>
+              <div class="dash-sch-col">
+                <div class="dash-sch-track"><div class="dash-sch-f alt" style="height:28%"></div></div>
+                <span>S2</span>
+              </div>
+              <div class="dash-sch-col">
+                <div class="dash-sch-track"><div class="dash-sch-f wide" style="height:82%"></div></div>
+                <span>S3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="feat-head">
+      <div>
+        <div class="eyebrow reveal"><div class="eyebrow-bar"></div><span class="eyebrow-txt">Key Features</span></div>
+        <h2 class="sec-title reveal" style="margin-bottom:0;">Six<br>Core<br>Modules</h2>
+      </div>
+      <p class="sec-lead reveal" style="margin-bottom:0;max-width:340px;">Six integrated modules guide asset owners from initial data input to a fully costed, floor-level retrofit transition plan.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="fcard reveal d1"><div class="fcard-bg">01</div><div class="ficon">🏢</div><h3>Property Data Management</h3><p>Ingest and structure building details, GHG emissions data, lease agreements, utility consumption, and financial records into a verified, auditable baseline.</p><div class="ftags"><span class="ftag">Building Data</span><span class="ftag">GHG Records</span><span class="ftag">Leases</span><span class="ftag">Financials</span></div></div>
+      <div class="fcard reveal d2"><div class="fcard-bg">02</div><div class="ficon">📊</div><h3>Current State Analysis</h3><p>Automated evaluation of building performance — surfacing emissions intensity, energy efficiency scores, and regulatory gap analysis through visual dashboards.</p><div class="ftags"><span class="ftag">Emissions Intensity</span><span class="ftag">Energy Score</span><span class="ftag">Gap Analysis</span></div></div>
+      <div class="fcard reveal d3"><div class="fcard-bg">03</div><div class="ficon">⚖️</div><h3>Peer Benchmarking</h3><p>Compare against major asset owners — BlackRock, Embassy REIT, Brookfield — to understand relative positioning and identify what top performers do differently.</p><div class="ftags"><span class="ftag">Industry Peers</span><span class="ftag">Relative Ranking</span><span class="ftag">Best-in-Class</span></div></div>
+      <div class="fcard reveal d1"><div class="fcard-bg">04</div><div class="ficon">🎯</div><h3>Target Setting</h3><p>Define custom 5-year sustainability commitments aligned to net-zero pathways. Visualize milestones and track actuals vs. commitments in real time.</p><div class="ftags"><span class="ftag">5-Year Goals</span><span class="ftag">Net-Zero Path</span><span class="ftag">Milestones</span></div></div>
+      <div class="fcard reveal d2"><div class="fcard-bg">05</div><div class="ficon">⚠️</div><h3>Physical Risk Assessment</h3><p>Evaluate exposure to climate-related physical risks — flooding, extreme heat, energy volatility — to prioritize which assets need the most urgent capital intervention.</p><div class="ftags"><span class="ftag">Flood Risk</span><span class="ftag">Heat Stress</span><span class="ftag">Stranded Asset</span></div></div>
+      <div class="fhero fcard reveal">
+        <div>
+          <div class="fcard-bg">06</div>
+          <div class="ficon">🏗️</div>
+          <h3>Transition Planning &amp; Floor-Level Customization</h3>
+          <p>Build a complete retrofit roadmap with granular floor-by-floor control. Assign individual strategies per floor — HVAC, envelope, lighting. Simulate emissions impact in real time. Compare scenarios side-by-side before committing capital.</p>
+          <div class="ftags" style="margin-top:18px;"><span class="ftag">Floor Control</span><span class="ftag">Real-time Sim</span><span class="ftag">Multi-Scenario</span><span class="ftag">HVAC+Envelope</span><span class="ftag">Costed Roadmap</span></div>
+        </div>
+        <div class="floor-bars">
+          <div class="floor-bars-lbl">Emissions Reduction by Floor — Scenario A</div>
+          <div class="fbrow"><span class="fblbl">Floor 12</span><div class="fbtrack"><div class="fbfill" style="width:88%"></div></div><span class="fbpct">−88%</span></div>
+          <div class="fbrow"><span class="fblbl">Floor 11</span><div class="fbtrack"><div class="fbfill" style="width:74%"></div></div><span class="fbpct">−74%</span></div>
+          <div class="fbrow"><span class="fblbl">Floor 10</span><div class="fbtrack"><div class="fbfill" style="width:67%"></div></div><span class="fbpct">−67%</span></div>
+          <div class="fbrow"><span class="fblbl">Floor 9</span><div class="fbtrack"><div class="fbfill" style="width:58%"></div></div><span class="fbpct">−58%</span></div>
+          <div class="fbrow"><span class="fblbl">Floor 8</span><div class="fbtrack"><div class="fbfill" style="width:49%"></div></div><span class="fbpct">−49%</span></div>
+          <div class="fbrow"><span class="fblbl">Floor 7</span><div class="fbtrack"><div class="fbfill" style="width:42%"></div></div><span class="fbpct">−42%</span></div>
+          <div class="fbrow"><span class="fblbl">Floor 6</span><div class="fbtrack"><div class="fbfill" style="width:36%"></div></div><span class="fbpct">−36%</span></div>
+          <div class="fhero-note">Full HVAC + Envelope + Lighting Retrofit</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USER FLOW -->
+<section id="flow">
+  <div class="wrap">
+    <div class="flow-layout">
+      <div class="flow-sticky">
+        <div class="flow-bign">07</div>
+        <div class="eyebrow reveal"><div class="eyebrow-bar"></div><span class="eyebrow-txt">User Flow</span></div>
+        <h2 class="sec-title reveal" style="font-size:clamp(40px,5vw,64px);">Seven<br>Steps to<br>Sustainability</h2>
+        <p class="sec-lead reveal" style="margin-bottom:0;font-size:13px;">Every user journey follows a structured path — from login through to a fully simulated, floor-level transition plan. Each step builds on the last.</p>
+      </div>
+      <div class="flow-steps">
+        <div class="fstep reveal"><div class="fstep-lhs"><div class="fstep-n">01</div><div class="fstep-conn"></div></div><div class="fstep-body"><div class="fstep-phase">Entry Point</div><h3>Login &amp; Authentication</h3><p>Users securely access their RetrofitX workspace. New users are guided through portfolio onboarding. Existing users land on a personalized dashboard summarizing their portfolio's current state.</p><div class="fchips"><span class="fchip">SSO Support</span><span class="fchip">Multi-Portfolio</span><span class="fchip">Role-Based Access</span></div></div></div>
+        <div class="fstep reveal"><div class="fstep-lhs"><div class="fstep-n">02</div><div class="fstep-conn"></div></div><div class="fstep-body"><div class="fstep-phase">Data Ingestion</div><h3>Property Portfolio</h3><p>Users input comprehensive building information — structural details, GHG emissions by source, lease agreements, utility consumption, and financial records. RetrofitX structures this into a verified, auditable baseline for all subsequent analysis.</p><div class="fchips"><span class="fchip">Building Details</span><span class="fchip">GHG Emissions</span><span class="fchip">Leases</span><span class="fchip">Financials</span><span class="fchip">Utilities</span></div></div></div>
+        <div class="fstep reveal"><div class="fstep-lhs"><div class="fstep-n">03</div><div class="fstep-conn"></div></div><div class="fstep-body"><div class="fstep-phase">Performance Evaluation</div><h3>View Current State</h3><p>The platform generates a comprehensive current-state report: emissions intensity per m², energy efficiency scores, equivalent ratings, and gap analysis against compliance requirements. Complex data becomes immediately actionable.</p><div class="fchips"><span class="fchip">Emissions Intensity</span><span class="fchip">Energy Score</span><span class="fchip">Gap Analysis</span><span class="fchip">Regulatory Fit</span></div></div></div>
+        <div class="fstep reveal"><div class="fstep-lhs"><div class="fstep-n">04</div><div class="fstep-conn"></div></div><div class="fstep-body"><div class="fstep-phase">Competitive Context</div><h3>Benchmark Against Industry</h3><p>RetrofitX benchmarks building performance against major asset owners including BlackRock, Embassy REIT, and Brookfield. Users gain immediate visibility into their relative ranking and identify the specific factors separating them from best-in-class.</p><div class="fchips"><span class="fchip">Industry Peers</span><span class="fchip">Portfolio Ranking</span><span class="fchip">Performance Gaps</span></div></div></div>
+        <div class="fstep reveal"><div class="fstep-lhs"><div class="fstep-n">05</div><div class="fstep-conn"></div></div><div class="fstep-body"><div class="fstep-phase">Goal Framework</div><h3>Set Sustainability Targets</h3><p>Users define 5-year sustainability commitments aligned with net-zero pathways and internal ESG strategy. Targets are visualized as milestone curves with annual breakpoints, enabling ongoing progress tracking as retrofit activities are completed.</p><div class="fchips"><span class="fchip">5-Year Roadmap</span><span class="fchip">Net-Zero Alignment</span><span class="fchip">Annual Milestones</span></div></div></div>
+        <div class="fstep reveal"><div class="fstep-lhs"><div class="fstep-n">06</div><div class="fstep-conn"></div></div><div class="fstep-body"><div class="fstep-phase">Risk Intelligence</div><h3>Physical Risk Assessment</h3><p>The platform evaluates each property's exposure to climate-related physical risks: extreme heat, flood probability, energy price volatility, and stranded asset risk. Outputs help prioritize which buildings require the most urgent intervention.</p><div class="fchips"><span class="fchip">Flood Risk</span><span class="fchip">Heat Stress</span><span class="fchip">Stranded Asset</span><span class="fchip">Capital Priority</span></div></div></div>
+        <div class="fstep reveal"><div class="fstep-lhs"><div class="fstep-n">07</div><div class="fstep-conn"></div></div><div class="fstep-body"><div class="fstep-phase">Execution Planning</div><h3>Transition Planning &amp; Floor Customization</h3><p>The final and most powerful step. Users build a complete retrofit transition plan with granular floor-by-floor customization. Each floor is assigned its own strategy. Real-time simulation projects the emissions impact of every decision. Multiple scenarios are compared side-by-side before a single dollar is spent.</p><div class="fchips"><span class="fchip">Floor-Level Control</span><span class="fchip">Real-time Sim</span><span class="fchip">Multi-Scenario</span><span class="fchip">HVAC/Envelope</span><span class="fchip">Costed Roadmap</span></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT UI -->
+<section id="product-ui">
+  <div class="wrap">
+    <div class="ui-intro">
+      <div class="eyebrow reveal"><div class="eyebrow-bar"></div><span class="eyebrow-txt">Product UI</span></div>
+      <h2 class="sec-title reveal">Screen-by-<br>Screen</h2>
+      <p class="sec-lead reveal" style="margin-bottom:0;">Representative interfaces from the RetrofitX product — each with context for what the screen is for. Previews expand to the full height of each mockup.</p>
+    </div>
+
+    <div class="ui-screens">
+      <article class="ui-screen reveal d1" id="ui-screen-01">
+        <div class="ui-screen-head">
+          <span class="ui-screen-n" aria-hidden="true">01</span>
+          <h3 class="ui-screen-title">Property portfolio</h3>
+          <p class="ui-screen-desc">The portfolio hub lists every asset with emissions intensity, energy use, and status at a glance. Users filter and sort to decide where to drill in next, and open a building without losing portfolio context.</p>
+        </div>
+        <div class="ui-screen-scroll" role="region" aria-label="Property portfolio screen preview">
+          <img src="RetrofitX UI Screen/POPERTY PORTFOLIO.svg" width="1440" height="900" loading="lazy" decoding="async" alt="RetrofitX property portfolio table and filters.">
+        </div>
+      </article>
+
+      <article class="ui-screen reveal d2" id="ui-screen-02">
+        <div class="ui-screen-head">
+          <span class="ui-screen-n" aria-hidden="true">02</span>
+          <h3 class="ui-screen-title">Data collection — block view</h3>
+          <p class="ui-screen-desc">Structured capture of building data by block or wing: areas, systems, occupancy, and meter boundaries. This view keeps bulk entry efficient before users move to finer floor-level detail.</p>
+        </div>
+        <div class="ui-screen-scroll" role="region" aria-label="Block-wise data collection screen preview">
+          <img src="RetrofitX UI Screen/DATA COLLECTION - BLOCK WISE DETAILS.png" width="1280" height="832" loading="lazy" decoding="async" alt="RetrofitX building details: block-wise data collection with map and new block form.">
+        </div>
+      </article>
+
+      <article class="ui-screen reveal d3" id="ui-screen-03">
+        <div class="ui-screen-head">
+          <span class="ui-screen-n" aria-hidden="true">03</span>
+          <h3 class="ui-screen-title">Data collection — floor view</h3>
+          <p class="ui-screen-desc">Floor-by-floor inputs mirror how operators think about tenancies and MEP zones. Completing this layer feeds accurate baselines for retrofit scenarios and regulatory reporting.</p>
+        </div>
+        <div class="ui-screen-scroll" role="region" aria-label="Floor-wise data collection screen preview">
+          <img src="RetrofitX UI Screen/DATA COLLECTION - FLOOR WISE DETAILS.svg" width="1440" height="900" loading="lazy" decoding="async" alt="RetrofitX floor-level data entry screen.">
+        </div>
+      </article>
+
+      <article class="ui-screen reveal d4" id="ui-screen-04">
+        <div class="ui-screen-head">
+          <span class="ui-screen-n" aria-hidden="true">04</span>
+          <h3 class="ui-screen-title">Current state</h3>
+          <p class="ui-screen-desc">A consolidated read on how the asset performs today: scores, gaps versus policy, and headline KPIs. Designed so executives and asset managers align on “where we are” before debating “where we go.”</p>
+        </div>
+        <div class="ui-screen-scroll" role="region" aria-label="Current state dashboard screen preview">
+          <img src="RetrofitX UI Screen/CURRENT STATE.svg" width="1440" height="900" loading="lazy" decoding="async" alt="RetrofitX current state summary dashboard.">
+        </div>
+      </article>
+
+      <article class="ui-screen reveal d1" id="ui-screen-05">
+        <div class="ui-screen-head">
+          <span class="ui-screen-n" aria-hidden="true">05</span>
+          <h3 class="ui-screen-title">Current state emissions</h3>
+          <p class="ui-screen-desc">Scope-level breakdowns and charts tie activity data to tCO₂e. Teams use this screen to spot drivers of intensity and to validate that ingested data produces sensible totals.</p>
+        </div>
+        <div class="ui-screen-scroll" role="region" aria-label="Current state emissions screen preview">
+          <img src="RetrofitX UI Screen/EMISSIONS - TOTAL.png" width="5120" height="7708" loading="lazy" decoding="async" alt="RetrofitX current state GHG emissions dashboard: metrics, charts, and block-level map.">
+        </div>
+      </article>
+
+      <article class="ui-screen reveal d2" id="ui-screen-06">
+        <div class="ui-screen-head">
+          <span class="ui-screen-n" aria-hidden="true">06</span>
+          <h3 class="ui-screen-title">Peer benchmarking</h3>
+          <p class="ui-screen-desc">Compares the portfolio to selected peers and market references. Relative ranking and gap callouts make it clear which metrics lag best-in-class and deserve program attention.</p>
+        </div>
+        <div class="ui-screen-scroll" role="region" aria-label="Market benchmarking screen preview">
+          <img src="RetrofitX UI Screen/Benchmarking - Market.svg" width="1440" height="900" loading="lazy" decoding="async" alt="RetrofitX market benchmarking comparison view.">
+        </div>
+      </article>
+
+      <article class="ui-screen reveal d3" id="ui-screen-07">
+        <div class="ui-screen-head">
+          <span class="ui-screen-n" aria-hidden="true">07</span>
+          <h3 class="ui-screen-title">Target setting</h3>
+          <p class="ui-screen-desc">Users define science-aligned or custom reduction targets and see trajectory against a baseline. Milestones and years are explicit so progress can be tracked through each budget cycle.</p>
+        </div>
+        <div class="ui-screen-scroll" role="region" aria-label="Target setting screen preview">
+          <img src="RetrofitX UI Screen/Target Setting.svg" width="1440" height="900" loading="lazy" decoding="async" alt="RetrofitX sustainability target setting interface.">
+        </div>
+      </article>
+
+      <article class="ui-screen reveal d4" id="ui-screen-08">
+        <div class="ui-screen-head">
+          <span class="ui-screen-n" aria-hidden="true">08</span>
+          <h3 class="ui-screen-title">Physical risk</h3>
+          <p class="ui-screen-desc">Climate hazard signals—flood, heat, wind, and related stress—surface per property to inform capex prioritization and disclosure. Risk bands connect abstract models to actionable asset planning.</p>
+        </div>
+        <div class="ui-screen-scroll" role="region" aria-label="Physical risk assessment screen preview">
+          <img src="RetrofitX UI Screen/PHYSICAL RISK.svg" width="1440" height="900" loading="lazy" decoding="async" alt="RetrofitX physical climate risk assessment screen.">
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section id="impact">
+  <div class="impact-wrap">
+    <div class="eyebrow reveal"><div class="eyebrow-bar"></div><span class="eyebrow-txt">Outcomes</span></div>
+    <h2 class="sec-title reveal">Measurable<br>Impact</h2>
+    <p class="sec-lead reveal">RetrofitX translates complex sustainability data into confident, executable decisions — across individual buildings and global portfolios.</p>
+    <div class="imp-grid">
+      <div class="imp-card reveal d1"><div class="imp-v">↓40%</div><div class="imp-l">Average emissions reduction achievable through platform-guided retrofits</div></div>
+      <div class="imp-card reveal d2"><div class="imp-v">3×</div><div class="imp-l">Faster retrofit decisions vs. traditional consultant-led processes</div></div>
+      <div class="imp-card reveal d3"><div class="imp-v">100%</div><div class="imp-l">Data centralization — one platform replacing fragmented spreadsheets</div></div>
+      <div class="imp-card reveal d4"><div class="imp-v">∞</div><div class="imp-l">Scenarios modeled before committing capital to any retrofit plan</div></div>
+    </div>
+    <div class="out-grid">
+      <div class="out-card reveal d1"><div class="out-t">Better Decisions</div><p>Scenario simulation and benchmarking replace guesswork with evidence-based retrofit strategies that align financial and environmental goals.</p></div>
+      <div class="out-card reveal d2"><div class="out-t">Reduced Emissions</div><p>Granular floor-level planning ensures every intervention targets the highest-impact areas for maximum measurable carbon reduction.</p></div>
+      <div class="out-card reveal d3"><div class="out-t">Scalable Strategy</div><p>From a single property to a portfolio of hundreds — consistent data quality and insight at every scale.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- UX -->
+<section id="ux">
+  <div class="wrap">
+    <div class="eyebrow reveal"><div class="eyebrow-bar"></div><span class="eyebrow-txt">UI / UX</span></div>
+    <h2 class="sec-title reveal">Built for<br>Enterprise.<br>Designed<br>for Clarity.</h2>
+    <div class="ux-grid">
+      <div class="uxcard reveal d1"><div class="uxcard-n">01</div><span class="ux-ico">📊</span><h3>Data Visualization</h3><p>Interactive charts, emission curves, and floor-plan visualizations turn raw data into immediate insight. Every metric is contextualised so users always understand what numbers mean for their assets.</p></div>
+      <div class="uxcard reveal d2"><div class="uxcard-n">02</div><span class="ux-ico">🎛️</span><h3>Interactive Dashboards</h3><p>Role-based dashboards surface the right information for asset managers, sustainability leads, and finance teams — all configurable without code. Live KPI tracking keeps every stakeholder aligned.</p></div>
+      <div class="uxcard reveal d3"><div class="uxcard-n">03</div><span class="ux-ico">🔬</span><h3>Scenario Simulation</h3><p>Model unlimited retrofit combinations before any capital commitment. Side-by-side scenario comparison with projected cost, payback period, and emissions reduction gives unparalleled confidence.</p></div>
+      <div class="uxcard reveal d4"><div class="uxcard-n">04</div><span class="ux-ico">🏛️</span><h3>Clean Enterprise UX</h3><p>A structured interface language drawn from architectural drafting — precise, grid-based layouts with purposeful density that signals analytical rigor without sacrificing usability.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-in">
+    <div class="ft-bar"></div>
+    <div class="ft-tag">Transforming Commercial Buildings for a Sustainable Future</div>
+    <div class="ft-div"></div>
+    <div class="ft-copy">© 2024 RetrofitX · Product Case Study · All metrics are illustrative</div>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+}, { threshold: 0.08, rootMargin: '0px 0px -28px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

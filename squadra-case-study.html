@@ -41,21 +41,41 @@
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 4rem; height: 64px;
+    padding: 10px 4rem 12px; min-height: 64px;
     background: rgba(255,255,255,0.92);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
   }
-  .nav-logo {
-    display: flex; align-items: center; gap: 10px;
-    font-family: var(--serif); font-size: 1.2rem; font-weight: 400; color: var(--dark);
+  .nav-start {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .case-breadcrumb {
+    font-family: var(--sans);
+    font-size: calc(11px + 4px);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gray2);
+  }
+  .case-breadcrumb a {
+    color: var(--gray2);
     text-decoration: none;
+    transition: color .2s;
   }
-  .nav-logo span {
-    width: 28px; height: 28px; background: var(--green);
-    border-radius: 7px; display: flex; align-items: center; justify-content: center;
+  .case-breadcrumb a:hover {
+    color: var(--green);
   }
-  .nav-logo span svg { width: 16px; height: 16px; fill: #fff; }
+  .case-breadcrumb-sep {
+    margin: 0 0.45em;
+    opacity: 0.5;
+  }
+  .case-breadcrumb-current {
+    color: var(--green);
+    font-weight: 600;
+  }
   .nav-links { display: flex; gap: 2rem; }
   .nav-links a {
     font-size: 13px; font-weight: 500; color: var(--gray1);
@@ -74,7 +94,7 @@
     min-height: 100vh; display: flex; flex-direction: column;
     justify-content: flex-end; padding: 0 4rem 5rem;
     background: var(--dark); position: relative; overflow: hidden;
-    padding-top: 64px;
+    padding-top: 76px;
   }
   .hero-bg-pattern {
     position: absolute; inset: 0; opacity: .07;
@@ -687,14 +707,11 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="./index.html#projects" target="_top" rel="noopener" aria-label="Back to main page">
-    <span>
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 3C7 3 3 6.5 3 11c0 2.4 1.1 4.5 2.8 6L5 21l4-1.5c1 .3 2 .5 3 .5 5 0 9-3.5 9-8s-4-9-9-9z"/>
-      </svg>
-    </span>
-    Squadra
-  </a>
+  <div class="nav-start">
+    <div class="case-breadcrumb" aria-label="Breadcrumb">
+      <a href="./index.html#projects" target="_top" rel="noopener">Home</a><span class="case-breadcrumb-sep" aria-hidden="true">/</span><span class="case-breadcrumb-current">Squadra</span>
+    </div>
+  </div>
   <div class="nav-links">
     <a href="#overview">Overview</a>
     <a href="#research">Research</a>
