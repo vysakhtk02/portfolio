@@ -1,214 +1,656 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About Me | Vysakh TK</title>
-    <meta
-      name="description"
-      content="About Vysakh TK — UI/UX designer in Bengaluru. Experience, skills, and selected work."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body class="about-page">
-    <div class="bg-parallax" aria-hidden="true">
-      <span class="parallax-glow glow-purple" data-speed="0.09"></span>
-      <span class="parallax-glow glow-orange" data-speed="0.13"></span>
-      <span class="parallax-glow glow-blue" data-speed="0.07"></span>
+<!DOCTYPE html><!--  This site was created in Webflow. https://www.webflow.com  -->
+<!--  Last Published: Wed Nov 01 2023 20:02:29 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="653f89b4e9e254a052baa327" data-wf-site="652680d753e9ac5aa0dbd69b">
+<head>
+  <meta charset="utf-8">
+  <title>About Me | Vysakh TK</title>
+  <meta content="About Me | Vysakh TK" property="og:title">
+  <meta content="About Me | Vysakh TK" property="twitter:title">
+  <meta name="description" content="About Vysakh TK — UI/UX designer in Bengaluru with 4 years' experience. Experience, skills, and education.">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Webflow" name="generator">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/jizans-portfolio.webflow.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({  google: {    families: ["Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic"]  }});</script>
+  <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+  <link href="images/webclip.png" rel="apple-touch-icon">
+</head>
+<style>
+  .responsive-text {
+    font-size: 12px;
+    line-height: 16px;
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .responsive-text {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .responsive-text {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+
+  @media (min-width: 1512px) {
+    .responsive-text {
+      font-size: 20px;
+      line-height: 28px;
+    }
+  }
+
+  .about-me-intro-block {
+    max-width: 720px;
+    width: 100%;
+  }
+
+  /* Post-hero layout aligned with Content Ref/about-me.html (single column, section order) */
+  .about-main-content {
+    width: 100%;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+  }
+
+  .about-ref-section {
+    padding: 56px 100px 64px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .about-ref-section--soft {
+    background-color: #fafafa;
+  }
+
+  .about-ref-container {
+    max-width: 900px;
+  }
+
+  .about-ref-h2 {
+    margin-bottom: 1.25rem;
+  }
+
+  .about-ref-story {
+    max-width: 720px;
+  }
+
+  .about-ref-story p {
+    margin: 0 0 1rem;
+    font-family: Graphik, sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 32px;
+    color: #000;
+  }
+
+  .about-ref-story p.about-ref-story-lead {
+    font-weight: 500;
+  }
+
+  .about-ref-skill-label {
+    font-family: Graphik, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 0 0 0.65rem;
+  }
+
+  .about-ref-skill-label-spaced {
+    margin-top: 1.35rem;
+  }
+
+  .about-ref-skills {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .about-ref-skills li {
+    font-family: Graphik, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #000;
+    padding: 0.45rem 0.95rem;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 999px;
+    background: #fff;
+  }
+
+  .about-ref-section--soft .about-ref-skills li {
+    background: #fafafa;
+  }
+
+  .about-ref-products-note {
+    font-family: Graphik, sans-serif;
+    font-size: 20px;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.55);
+    margin: -0.35rem 0 1rem;
+    max-width: 48ch;
+  }
+
+  .about-ref-products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .about-ref-product-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: #fff;
+    color: #000;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    font-family: Graphik, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .about-ref-product-chip:hover {
+    border-color: rgba(0, 0, 0, 0.35);
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .about-ref-education {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .about-ref-education li {
+    font-family: Graphik, sans-serif;
+    font-size: 20px;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+
+  .about-ref-education strong {
+    color: #000;
+    font-weight: 600;
+  }
+
+  /* Experience — LinkedIn-inspired timeline */
+  .about-exp-intro {
+    font-family: Graphik, sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.55);
+    margin: -0.35rem 0 2rem;
+    max-width: 52ch;
+  }
+
+  .about-exp-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 720px;
+  }
+
+  .about-exp-company {
+    display: flex;
+    gap: 1.15rem;
+    padding-bottom: 2rem;
+  }
+
+  .about-exp-company:last-child {
+    padding-bottom: 0;
+  }
+
+  .about-exp-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48px;
+    flex-shrink: 0;
+  }
+
+  .about-exp-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    box-shadow: 0 0 0 3px #fff, 0 0 0 4px rgba(0, 0, 0, 0.08);
+    background: #f4f4f5;
+    box-sizing: border-box;
+    padding: 4px;
+  }
+
+  .about-exp-logo--stead {
+    background: #0a0a0a;
+    padding: 6px;
+  }
+
+  .about-exp-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+  }
+
+  .about-exp-connector {
+    flex: 1;
+    width: 2px;
+    min-height: 1.5rem;
+    margin-top: 10px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.06));
+    border-radius: 1px;
+  }
+
+  .about-exp-company:last-child .about-exp-connector {
+    display: none;
+  }
+
+  .about-exp-company--current .about-exp-connector {
+    background: linear-gradient(180deg, rgba(14, 116, 110, 0.45), rgba(0, 0, 0, 0.08));
+  }
+
+  .about-exp-body {
+    flex: 1;
+    min-width: 0;
+    padding-top: 2px;
+  }
+
+  .about-exp-company-name {
+    margin: 0 0 1rem;
+    font-family: Graphik, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #000;
+  }
+
+  .about-exp-roles {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .about-exp-role {
+    position: relative;
+    padding-left: 1rem;
+    border-left: 2px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .about-exp-company--current .about-exp-role {
+    border-left-color: rgba(14, 116, 110, 0.5);
+  }
+
+  .about-exp-title {
+    margin: 0 0 0.35rem;
+    font-family: Graphik, sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #000;
+  }
+
+  .about-exp-company--past .about-exp-title {
+    color: rgba(0, 0, 0, 0.72);
+  }
+
+  .about-exp-meta {
+    margin: 0;
+    font-family: Graphik, sans-serif;
+    font-size: 14px;
+    line-height: 22px;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .about-exp-company--past .about-exp-meta {
+    color: rgba(0, 0, 0, 0.42);
+  }
+
+  @media screen and (max-width: 479px) {
+    .about-exp-company {
+      gap: 0.85rem;
+    }
+    .about-exp-rail {
+      width: 40px;
+    }
+    .about-exp-logo {
+      width: 40px;
+      height: 40px;
+    }
+    .about-exp-company-name {
+      font-size: 18px;
+    }
+    .about-exp-title {
+      font-size: 16px;
+    }
+  }
+
+  .about-ref-footer {
+    width: 100%;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.25rem 100px 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .about-ref-footer p {
+    margin: 0;
+    font-family: Graphik, sans-serif;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .about-ref-footer-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+
+  .about-ref-footer-socials a {
+    font-family: Graphik, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 2px;
+  }
+
+  .about-ref-footer-socials a:hover {
+    border-bottom-color: #000;
+  }
+
+  @media screen and (max-width: 991px) {
+    .about-ref-section {
+      padding-left: 60px;
+      padding-right: 60px;
+    }
+    .about-ref-footer {
+      padding-left: 60px;
+      padding-right: 60px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .about-ref-section {
+      padding: 40px 40px 48px;
+    }
+    .about-ref-story p {
+      font-size: 18px;
+      line-height: 26px;
+    }
+    .about-ref-education li {
+      font-size: 16px;
+      line-height: 24px;
+    }
+    .about-ref-footer {
+      padding: 1rem 40px 1.5rem;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media screen and (max-width: 479px) {
+    .about-ref-section {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .about-ref-footer {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+</style>
+<body class="body">
+  <div id="Nab-Bar" class="header-container">
+    <div class="header">
+      <a href="index.html" class="link-box w-inline-block">
+        <div class="label-small disabled">Home</div>
+      </a>
+      <a href="all-projects.html" class="link-block w-inline-block">
+        <div class="label-small disabled">Projects</div>
+      </a>
+      <a href="about-me.html" aria-current="page" class="link-block-7 w-inline-block w--current">
+        <div class="label-small selected">About Me</div>
+      </a>
     </div>
-
-    <header class="site-header">
-      <div class="container nav-wrap">
-        <nav class="nav-links" aria-label="Primary">
-          <a href="./index.html#home">Home</a>
-          <a href="./index.html#projects">Projects</a>
-          <a class="is-active" href="./about-me.html">About Me</a>
-        </nav>
-        <button class="menu-btn" aria-expanded="false" aria-controls="mobile-nav">Menu</button>
+  </div>
+  <div class="about-me-header" style="max-width: 100vw; overflow-x: hidden;">
+    <div class="about-me-content-container">
+      <div class="frame-26911">
+        <div class="frame-26910"><img src="images/Vectors-Wrapper_11.svg" loading="lazy" width="96" height="96" alt="" class="vectors-wrapper-23">
+          <div class="heading-medium-4 y">Hey <span aria-hidden="true">👋🏽</span>, I’m Vysakh</div>
+        </div>
+        <p class="responsive-text">Currently designing at <strong>Sustainabilityeconomics.ai</strong> — leading design for core products including CLEM, CLEM.ai, Carbon Accounting Tool, Physical Risk Explorer, and Greenfund.ai: dashboards, workflows, and user-focused interfaces for simulation, emissions reporting, and risk mapping.</p>
       </div>
-      <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile">
-        <a href="./index.html#home">Home</a>
-        <a href="./index.html#projects">Projects</a>
-        <a class="is-active" href="./about-me.html">About Me</a>
-      </nav>
-    </header>
-
-    <main class="about-page-main">
-      <section class="section about-hero">
-        <div class="container about-hero-inner">
-          <p class="about-greeting">Hey <span aria-hidden="true">👋🏽</span>, I’m Vysakh</p>
-          <p class="about-lead">
-            Currently designing at <strong>Sustainainabilityeconomics.ai</strong> — leading interface and
-            experience work across climate-tech dashboards, workflows, and product surfaces.
-          </p>
-          <div class="about-cta-row">
-            <a class="btn btn-primary" href="./index.html#contact">Let’s Connect</a>
-            <a
-              class="btn btn-secondary"
-              href="https://www.linkedin.com/in/vysakhtk02/"
-              target="_blank"
-              rel="noopener noreferrer"
-              >Resume</a
-            >
+      <div class="w-layout-vflex button-container-about-me-s1">
+        <a href="mailto:vysakhtk02@gmail.com" class="link-block-11 contact-me w-inline-block">
+          <div class="button---about-me contact-me">
+            <div class="icon-4 mail"><img src="images/Vectors-Wrapper_12.svg" loading="lazy" width="20" height="17" alt="" class="vectors-wrapper-27"></div>
+            <div class="text-14">Let&#x27;s Chat</div>
           </div>
+        </a>
+        <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="link-block-12 resume w-inline-block">
+          <div class="button---about-me resume">
+            <div class="text-14 black">Resume</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="w-layout-vflex spline-about-me-3d">
+      <div class="spline-about-me-landing" data-w-id="35e7a4c4-e536-2fdc-672c-98fbfc9d9f14" data-animation-type="spline" data-spline-url="https://prod.spline.design/iwynRE78Sm171ksx/scene.splinecode"><canvas></canvas></div>
+    </div>
+  </div>
+  <div class="socials-container">
+    <div class="text-15">Socials</div>
+    <div class="socials-wrapper">
+      <a href="https://www.linkedin.com/in/vysakhtk02/" target="_blank" class="social-nav w-inline-block"><img src="images/Linkedin.png" loading="lazy" width="26" height="26" alt="" class="vectors-wrapper-28">
+        <div class="text-16">Linkedin</div>
+      </a>
+      <a href="https://www.behance.net/vysakhtk" target="_blank" class="social-nav w-inline-block"><img src="images/Behance.png" loading="lazy" width="26" height="26" alt="" class="vectors-wrapper-28">
+        <div class="text-16">Behance</div>
+      </a>
+    </div>
+  </div>
+  <main class="about-main-content">
+    <section class="about-ref-section">
+      <div class="about-ref-container">
+        <h2 class="heading-medium-5 paragraph about-ref-h2">About Me</h2>
+        <div class="about-ref-story about-me-intro-block">
+          <p class="about-ref-story-lead">👨🏽‍💻 UI/UX Designer based in Bengaluru, India.</p>
+          <p class="about-ref-story-lead">I’m a UI/UX Designer with 4 years of experience creating simple, engaging, and user-friendly digital products.</p>
+          <p>Along with design, I bring skills in graphic design and social media marketing, which help me connect creativity with brand presence.</p>
+          <p>I enjoy turning ideas into designs that not only look good but also make the experience smooth and meaningful for users.</p>
+        </div>
+      </div>
+    </section>
 
-          <div class="about-socials-panel">
-            <p class="about-socials-label">Socials</p>
-            <div class="about-socials-list">
-              <a href="https://www.linkedin.com/in/vysakhtk02/" target="_blank" rel="noopener noreferrer"
-                >LinkedIn</a
-              >
-              <a href="https://www.behance.net/vysakhtk" target="_blank" rel="noopener noreferrer">Behance</a>
+    <section class="about-ref-section about-ref-section--soft" aria-labelledby="experience-heading">
+      <div class="about-ref-container">
+        <h2 id="experience-heading" class="heading-medium-5 paragraph about-ref-h2">Experience</h2>
+        <p class="about-exp-intro">Product and interface design across climate-tech, multi-client studio work, and brand-led marketing teams.</p>
+        <div class="about-exp-timeline">
+          <article class="about-exp-company about-exp-company--current">
+            <div class="about-exp-rail">
+              <div class="about-exp-logo about-exp-logo--se">
+                <img src="images/exp-logo-se.png" alt="" class="about-exp-logo-img" width="48" height="48" loading="lazy" decoding="async">
+              </div>
+              <div class="about-exp-connector" aria-hidden="true"></div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-soft about-section">
-        <div class="container">
-          <h2>About Me</h2>
-          <div class="about-story">
-            <p class="about-story-lead">
-              I’m a UI/UX Designer with 4 years of experience creating simple, engaging, and user-friendly digital
-              products.
-            </p>
-            <p>
-              Along with design, I bring skills in graphic design and social media marketing, which help me connect
-              creativity with brand presence.
-            </p>
-            <p>
-              I enjoy turning ideas into designs that not only look good but also make the experience smooth and
-              meaningful for users.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section about-section">
-        <div class="container">
-          <h2>Selected work</h2>
-          <p class="about-featured-intro">Case studies and deep dives you can explore in full.</p>
-          <div class="about-featured-grid">
-            <a class="about-featured-card" href="./fitzdo-case-study.html">
-              <span class="about-featured-kicker">UX Case Study</span>
-              <span class="about-featured-title">FITZDO — Healthcare partner portal</span>
-              <span class="about-featured-meta">Booking, partner onboarding, and clinic workflows</span>
-              <span class="about-featured-arrow" aria-hidden="true">↗</span>
-            </a>
-            <a class="about-featured-card" href="./squadra-case-study.html">
-              <span class="about-featured-kicker">UX Case Study</span>
-              <span class="about-featured-title">Squadra — LMS admin experience</span>
-              <span class="about-featured-meta">Dashboards, course creation, and scalable UI patterns</span>
-              <span class="about-featured-arrow" aria-hidden="true">↗</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-soft about-section">
-        <div class="container">
-          <h2>Skills</h2>
-
-          <p class="about-socials-label">Design</p>
-          <ul class="about-skills" aria-label="Design skills">
-            <li>UI/UX Design</li>
-            <li>Dashboard Design</li>
-            <li>Design Systems</li>
-            <li>Data Visualization</li>
-            <li>Accessibility</li>
-            <li>Prototyping</li>
-            <li>Components</li>
-            <li>Wireframes</li>
-            <li>Responsive Design</li>
-            <li>Interaction Design</li>
-            <li>Visual Design</li>
-          </ul>
-
-          <p class="about-socials-label" style="margin-top: 1.2rem;">Tools</p>
-          <ul class="about-skills" aria-label="Design tools">
-            <li>Figma</li>
-            <li>Framer</li>
-            <li>Rive</li>
-            <li>Miro</li>
-            <li>FigJam</li>
-            <li>Notion</li>
-            <li>Adobe Illustrator</li>
-            <li>Adobe Photoshop</li>
-          </ul>
-
-          <p class="about-socials-label" style="margin-top: 1.2rem;">Process</p>
-          <ul class="about-skills" aria-label="Design process">
-            <li>Agile</li>
-            <li>Scrum</li>
-            <li>UX Research</li>
-            <li>Usability Testing</li>
-            <li>Developer Handoff</li>
-            <li>Cross-functional Collaboration</li>
-            <li>System Thinking</li>
-            <li>Documentation</li>
-            <li>Design Thinking</li>
-            <li>UX Process</li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="section about-section">
-        <div class="container">
-          <h2>Products I’ve designed for</h2>
-          <p class="about-products-note">Teams and contexts I’ve shipped work with.</p>
-          <div class="about-products" role="list">
-            <a
-              class="about-product-chip"
-              role="listitem"
-              href="https://sustainabilityeconomics.ai"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span>Sustainability Economics</span>
-              <span class="about-product-icon" aria-hidden="true">↗</span>
-            </a>
-            <a
-              class="about-product-chip"
-              role="listitem"
-              href="https://stead.global"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span>Stead</span>
-              <span class="about-product-icon" aria-hidden="true">↗</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" class="section">
-        <div class="container contact">
-          <p class="eyebrow">What’s next?</p>
-          <h2 class="contact-title">
-            <span class="contact-title-line">Want to collaborate?</span>
-            <span class="contact-title-line">Start from the home page.</span>
-          </h2>
-          <a class="btn-peek" href="./index.html#projects">Projects</a>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-wrap">
-        <p>&copy; <span id="year"></span> Vysakh TK</p>
-        <div class="socials">
-          <a href="https://www.linkedin.com/in/vysakhtk02/" aria-label="LinkedIn profile">LinkedIn</a>
-          <a href="https://www.behance.net/vysakhtk" aria-label="Behance profile">Behance</a>
+            <div class="about-exp-body">
+              <h3 class="about-exp-company-name">Sustainability Economics</h3>
+              <div class="about-exp-roles">
+                <div class="about-exp-role">
+                  <h4 class="about-exp-title">UI/UX Designer</h4>
+                  <p class="about-exp-meta">May 2023 – Present · Bengaluru, India · Full-time</p>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="about-exp-company about-exp-company--past">
+            <div class="about-exp-rail">
+              <div class="about-exp-logo about-exp-logo--stead">
+                <img src="images/exp-logo-stead.png" alt="" class="about-exp-logo-img" width="48" height="48" loading="lazy" decoding="async">
+              </div>
+              <div class="about-exp-connector" aria-hidden="true"></div>
+            </div>
+            <div class="about-exp-body">
+              <h3 class="about-exp-company-name">Stead</h3>
+              <div class="about-exp-roles">
+                <div class="about-exp-role">
+                  <h4 class="about-exp-title">UI/UX Designer</h4>
+                  <p class="about-exp-meta">Apr 2022 – Apr 2023 · Bengaluru, India · Full-time</p>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="about-exp-company about-exp-company--past">
+            <div class="about-exp-rail">
+              <div class="about-exp-logo about-exp-logo--av">
+                <img src="images/exp-logo-voyage.png" alt="" class="about-exp-logo-img" width="48" height="48" loading="lazy" decoding="async">
+              </div>
+              <div class="about-exp-connector" aria-hidden="true"></div>
+            </div>
+            <div class="about-exp-body">
+              <h3 class="about-exp-company-name">Adventure Voyage</h3>
+              <div class="about-exp-roles">
+                <div class="about-exp-role">
+                  <h4 class="about-exp-title">Design &amp; Marketing Head</h4>
+                  <p class="about-exp-meta">Jun 2018 – Sept 2021 · Calicut, Kerala · Part-time</p>
+                </div>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
-    </footer>
+    </section>
 
-    <script src="./script.js"></script>
-  </body>
+    <section class="about-ref-section">
+      <div class="about-ref-container">
+        <h2 class="heading-medium-5 paragraph about-ref-h2">Skills</h2>
+        <p class="about-ref-skill-label">Design</p>
+        <ul class="about-ref-skills" aria-label="Design skills">
+          <li>UI/UX Design</li>
+          <li>Dashboard Design</li>
+          <li>Design Systems</li>
+          <li>Data Visualization</li>
+          <li>Accessibility</li>
+          <li>Prototyping</li>
+          <li>Components</li>
+          <li>Wireframes</li>
+          <li>Responsive Design</li>
+          <li>Interaction Design</li>
+          <li>Visual Design</li>
+        </ul>
+        <p class="about-ref-skill-label about-ref-skill-label-spaced">Tools</p>
+        <ul class="about-ref-skills" aria-label="Design tools">
+          <li>Figma</li>
+          <li>Framer</li>
+          <li>Rive</li>
+          <li>Miro</li>
+          <li>FigJam</li>
+          <li>Notion</li>
+          <li>Adobe Illustrator</li>
+          <li>Adobe Photoshop</li>
+        </ul>
+        <p class="about-ref-skill-label about-ref-skill-label-spaced">Process</p>
+        <ul class="about-ref-skills" aria-label="Design process">
+          <li>Agile</li>
+          <li>Scrum</li>
+          <li>UX Research</li>
+          <li>Usability Testing</li>
+          <li>Developer Handoff</li>
+          <li>Cross-functional Collaboration</li>
+          <li>System Thinking</li>
+          <li>Documentation</li>
+          <li>Design Thinking</li>
+          <li>UX Process</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="about-ref-section about-ref-section--soft">
+      <div class="about-ref-container">
+        <h2 class="heading-medium-5 paragraph about-ref-h2">Products I’ve designed for</h2>
+        <p class="about-ref-products-note">Teams and contexts I’ve shipped work with.</p>
+        <div class="about-ref-products" role="list">
+          <a class="about-ref-product-chip" role="listitem" href="https://sustainabilityeconomics.ai" target="_blank" rel="noopener noreferrer">
+            <span>Sustainability Economics</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <a class="about-ref-product-chip" role="listitem" href="https://stead.global" target="_blank" rel="noopener noreferrer">
+            <span>Stead</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-ref-section">
+      <div class="about-ref-container">
+        <h2 class="heading-medium-5 paragraph about-ref-h2">Education</h2>
+        <ul class="about-ref-education" aria-label="Education">
+          <li><strong>Designboat UI/UX School</strong> — Course on UI/UX designing · Oct 2021 – Apr 2022 · Bangalore</li>
+          <li><strong>MES College of Engineering</strong> — B.Tech in Computer Science · 2016 – 2020 · Kuttipuram, Kerala</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="about-ref-footer">
+    <p>&copy; <span id="about-year"></span> Vysakh TK</p>
+    <div class="about-ref-footer-socials">
+      <a href="https://www.linkedin.com/in/vysakhtk02/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">LinkedIn</a>
+      <a href="https://www.behance.net/vysakhtk" target="_blank" rel="noopener noreferrer" aria-label="Behance profile">Behance</a>
+    </div>
+  </footer>
+
+  <div id="Nab-Bar" class="header-container">
+    <div class="header">
+      <a href="index.html" class="link-box w-inline-block">
+        <div class="label-small disabled">Home</div>
+      </a>
+      <a href="all-projects.html" class="link-block w-inline-block">
+        <div class="label-small disabled">Projects</div>
+      </a>
+      <a href="about-me.html" aria-current="page" class="link-block-7 w-inline-block w--current">
+        <div class="label-small selected">About Me</div>
+      </a>
+    </div>
+  </div>
+  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=652680d753e9ac5aa0dbd69b" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="js/webflow.js" type="text/javascript"></script>
+  <script>
+    document.getElementById("about-year").textContent = new Date().getFullYear();
+  </script>
+</body>
 </html>

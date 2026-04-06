@@ -1,281 +1,437 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vysakh TK | UI/UX Designer</title>
-    <meta
-      name="description"
-      content="Portfolio website showcasing product design work, process, and contact details."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <div class="bg-parallax" aria-hidden="true">
-      <span class="parallax-glow glow-purple" data-speed="0.09"></span>
-      <span class="parallax-glow glow-orange" data-speed="0.13"></span>
-      <span class="parallax-glow glow-blue" data-speed="0.07"></span>
+<!DOCTYPE html><!--  This site was created in Webflow. https://www.webflow.com  -->
+<!--  Last Published: Wed Nov 01 2023 20:02:29 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="652680d753e9ac5aa0dbd6a2" data-wf-site="652680d753e9ac5aa0dbd69b">
+<head>
+  <meta charset="utf-8">
+  <title>Vysakh TK&#x27;s Portfolio</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Webflow" name="generator">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/jizans-portfolio.webflow.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({  google: {    families: ["Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic"]  }});</script>
+  <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+  <link href="images/webclip.png" rel="apple-touch-icon">
+
+  <style>
+  .hover-animate {
+    display: block;
+    margin: 0 auto;
+    transition: transform 0.6s ease, filter 0.4s ease;
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  .hover-animate:hover {
+    transform: scale(1.08) rotate(2deg) translateY(-5px);
+    filter: brightness(1.1) drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+  }
+
+  /* 4% base zoom on project preview SVGs; clip overflow; hover = 1.04 × 1.08 */
+  .project-card---fitzdo .image---fitzdo,
+  .project-card---unq .image---unq,
+  .project-card---hfg .image---hfg {
+    overflow: hidden;
+  }
+  .project-card---fitzdo .image---fitzdo .fitzdo-preview-img,
+  .project-card---unq .image---unq img.hover-animate,
+  .project-card---hfg .image---hfg .retrofitx-preview-img {
+    transform: scale(1.04);
+    transform-origin: center center;
+  }
+  .project-card---fitzdo .image---fitzdo .fitzdo-preview-img.hover-animate:hover,
+  .project-card---unq .image---unq img.hover-animate:hover,
+  .project-card---hfg .image---hfg .retrofitx-preview-img.hover-animate:hover {
+    transform: scale(1.1232) rotate(2deg) translateY(-5px);
+    filter: brightness(1.1) drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+  }
+
+  /* FITZDO card — Fitzdo brand (orange #ff5c1a, dark neutrals) */
+  .project-card---fitzdo .label-medium {
+    color: #fafaf8;
+  }
+  .project-card---fitzdo .paragraph-medium-4 {
+    color: #a8a29e;
+  }
+  .project-card---fitzdo .label-small-15:not(.unq):not(.hfg) {
+    color: #ff5c1a;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(255, 92, 26, 0.55);
+  }
+  .project-card---fitzdo .indicator-3 {
+    background-color: rgba(255, 92, 26, 0.14);
+  }
+  .project-card---fitzdo .fitzdo-brand-logo {
+    color: #fafaf8;
+  }
+  .project-card---fitzdo .fitzdo-brand-logo .fitzdo-do {
+    color: #ff5c1a;
+  }
+  .project-card---fitzdo .chevron-icon.zunu {
+    filter: brightness(0) saturate(100%) invert(49%) sepia(93%) saturate(2876%) hue-rotate(353deg) brightness(101%) contrast(101%);
+  }
+
+  /* FITZDO preview: fill column height */
+  .project-card---fitzdo .image---fitzdo {
+    align-items: stretch;
+    justify-content: stretch;
+  }
+  .project-card---fitzdo .image---fitzdo .fitzdo-preview-img {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    object-fit: cover;
+    object-position: center;
+    margin: 0;
+  }
+  @media screen and (max-width: 479px) {
+    .project-card---fitzdo .image---fitzdo .fitzdo-preview-img {
+      min-height: 360px;
+    }
+  }
+
+  /* RetrofitX card — primary #007A6F, secondary #0F2626, white preview */
+  .project-card---hfg .label-medium {
+    color: #e8eeed;
+  }
+  .project-card---hfg .paragraph-medium-4 {
+    color: rgba(232, 240, 239, 0.72);
+  }
+  .project-card---hfg .label-small-15.hfg {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(0, 122, 111, 0.45);
+  }
+  .project-card---hfg .indicator-3 {
+    background-color: rgba(0, 122, 111, 0.2);
+  }
+  .project-card---hfg .retrofitx-brand-logo {
+    color: #fafaf8;
+  }
+  .project-card---hfg .chevron-icon.hfg {
+    filter: brightness(0) saturate(100%) invert(39%) sepia(20%) saturate(1205%) hue-rotate(126deg) brightness(95%) contrast(101%);
+  }
+  .project-card---hfg .image---hfg {
+    align-items: stretch;
+    justify-content: stretch;
+    padding: 0;
+  }
+  .project-card---hfg .image---hfg .retrofitx-preview-img {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    object-fit: cover;
+    object-position: center;
+    margin: 0;
+  }
+  @media screen and (max-width: 479px) {
+    .project-card---hfg .image---hfg .retrofitx-preview-img {
+      min-height: 360px;
+    }
+  }
+
+  .project-card---fitzdo .label-medium,
+  .project-card---unq .label-medium,
+  .project-card---hfg .label-medium {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+    word-break: break-word;
+  }
+</style>
+
+</head>
+<body class="body">
+  <div id="Nab-Bar" class="header-container">
+    <div class="header">
+      <a href="index.html" aria-current="page" class="link-box w-inline-block w--current">
+        <div class="label-small selected">Home</div>
+      </a>
+      <a href="all-projects.html" class="link-block w-inline-block">
+        <div class="label-small disabled">Projects</div>
+      </a>
+      <a href="about-me.html" class="link-block-7 w-inline-block">
+        <div class="label-small disabled">About Me</div>
+      </a>
     </div>
-
-    <header class="site-header">
-      <div class="container nav-wrap">
-        <nav class="nav-links" aria-label="Primary">
-          <a class="is-active" href="#home">Home</a>
-          <a href="#projects">Projects</a>
-          <a href="./about-me.html">About Me</a>
-        </nav>
-        <button class="menu-btn" aria-expanded="false" aria-controls="mobile-nav">
-          Menu
-        </button>
+  </div>
+  <div class="session-1">
+    <div id="w-node-_37e03c52-7dce-69e0-fc95-9a80e7e3a58c-a0dbd6a2" data-w-id="37e03c52-7dce-69e0-fc95-9a80e7e3a58c" style="-webkit-transform:translate3d(0, 140%, 0) scale3d(1, 1, 1) rotateX(90deg) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 140%, 0) scale3d(1, 1, 1) rotateX(90deg) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 140%, 0) scale3d(1, 1, 1) rotateX(90deg) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 140%, 0) scale3d(1, 1, 1) rotateX(90deg) rotateY(0) rotateZ(0) skew(0, 0);transform-style:preserve-3d;opacity:0" class="session-1-right-wrapper">
+      <div class="display-large mobile">Vysakh</div>
+      <div class="display-large mobile">TK</div>
+    </div>
+    <div id="w-node-_37e03c52-7dce-69e0-fc95-9a80e7e3a591-a0dbd6a2" data-w-id="37e03c52-7dce-69e0-fc95-9a80e7e3a591" style="opacity:0;-webkit-transform:translate3d(0, 140%, 0) scale3d(1, 1, 1) rotateX(90deg) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 140%, 0) scale3d(1, 1, 1) rotateX(90deg) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 140%, 0) scale3d(1, 1, 1) rotateX(90deg) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 140%, 0) scale3d(1, 1, 1) rotateX(90deg) rotateY(0) rotateZ(0) skew(0, 0);transform-style:preserve-3d" class="session-1-left-wrapper">
+      <div class="greetings-wrapper">
+        <div class="paragraph-large disabled mobile">Greetings</div>
+        <div class="paragraph-large-5 mobile">👋🏽</div>
       </div>
-      <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile">
-        <a class="is-active" href="#home">Home</a>
-        <a href="#projects">Projects</a>
-        <a href="./about-me.html">About Me</a>
-      </nav>
-    </header>
-
-    <main>
-      <section id="home" class="hero section">
-        <div class="container hero-grid">
-          <div>
-            <p class="eyebrow">Greetings 👋🏽</p>
-            <h1>
-              I'm <span class="text-accent">Vysakh TK</span>, a UI/UX Designer based in
-              Bengaluru, India.
-            </h1>
-            <p class="hero-copy">
-              UI/UX Designer with 4 years of experience creating engaging, user-friendly
-              products. Currently designing core climate-tech products at
-              <strong>Sustainainabilityeconomics.ai</strong>.
-            </p>
-            <div class="hero-cta">
-              <a class="btn btn-primary" href="#projects">View Projects</a>
-              <a class="btn btn-secondary" href="#contact">Let's Connect</a>
+      <div class="paragraph-large colored mobile">I&#x27;m a UI/UX Designer based in Bengaluru, India.</div>
+      <div class="paragraph-large colored mobile">Currently at 
+        <span style="
+        font-weight: 600;
+        font-size: inherit;
+        line-height: inherit;
+        background: linear-gradient(90deg, #f6a340, #ea4aaa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+      ">
+        Sustainabilityeconomics.ai
+      </span>, Leading design for core products including CLEM, Carbon Accounting Tool, and Physical Risk Explorer.</div>
+      <div class="paragraph-large colored mobile">I&#x27;ve previously worked at <span style="color: #FFC182;">Stead.global</span> and <span style="color: #FFC182;">Adventure Voyage</span>.</div>
+    </div>
+    </div>
+  </div>
+  <div class="seperator-container">
+    <div class="saperator-2"></div>
+  </div>
+  <div class="session-2" id="projects">
+    <div data-w-id="b62d0644-9851-3038-1abe-d8ca1c763d7e" class="text-wrapper">
+      <div class="heading-small mobile">Unveiling My</div>
+      <div class="heading-large mobile">Pinnacle Projects</div>
+    </div>
+    <div id="w-node-_367dd22d-88f2-5368-fc7b-9ba00b0d995f-a0dbd6a2" class="projects-container">
+      <a data-w-id="89f2df94-ca51-c3b8-c37f-af9edcf86acb" href="fitzdo-case-study.html" class="project-card---fitzdo w-inline-block">
+        <div class="content">
+          <div class="wrapper-8">
+            <div class="fitzdo-brand-logo" style="font-family: Montserrat, sans-serif; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.12em;">FITZ<span class="fitzdo-do">DO</span></div>
+            <div class="label-medium">Healthcare partner portal — fitness, wellness, and care in one digital ecosystem.</div>
+          </div>
+          <div class="wrapper-5">
+            <div class="view-project-wrapper">
+              <div class="w-layout-vflex view-project-container">
+                <div class="label-small-15">View case study</div>
+                <div data-w-id="107080da-e3f6-52e3-5a13-5511f60a7e05" style="opacity:0;-webkit-transform:translate3d(-900%, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(-900%, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(-900%, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(-900%, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" class="chevron-right zunu"><img src="images/Vectors-Wrapper_8.svg" loading="lazy" width="19.999168395996094" height="16" alt="" id="Icon-chevron" class="chevron-icon zunu"></div>
+              </div>
+              <div class="indicator-3">
+                <div data-w-id="89f2df94-ca51-c3b8-c37f-af9edcf86ad9" style="width:1%" class="loader fitzdo"></div>
+              </div>
             </div>
+            <div class="paragraph-medium-4">UX case study documenting partner workflows, care journeys, and product narrative for a healthcare platform.</div>
           </div>
-          <div class="hero-card">
-            <p class="hero-card-title">Now Building</p>
-            <p>Dashboards and workflows for emissions reporting, simulation, and risk mapping.</p>
-            <div class="status-row">
-              <span class="dot"></span>
-              <span>Open to product design opportunities</span>
+        </div>
+        <div class="image---fitzdo">
+          <img src="images/fitzdo-work-preview.svg" loading="lazy" alt="FITZDO case study preview" class="hover-animate fitzdo-preview-img">
+        </div>
+      </a>
+      <a data-w-id="45111743-fa8c-95ba-9aa7-c2ba2fb1616a" href="squadra-case-study.html" class="project-card---unq w-inline-block">
+        <div class="content">
+          <div class="wrapper-8">
+            <div class="recotap-logo" style="display: flex; align-items: center; gap: 10px;">
+              <span style="width: 28px; height: 28px; background: #018270; border-radius: 7px; flex-shrink: 0;" aria-hidden="true"></span>
+              <span style="font-family: Montserrat, sans-serif; font-weight: 600; font-size: 1.1rem; color: #fff;">Squadra</span>
             </div>
+            <div class="label-medium">Product UX for dashboard workflows and a scalable learning experience.</div>
           </div>
-        </div>
-      </section>
-
-      <section id="projects" class="section">
-        <div class="container">
-          <p class="eyebrow">Work</p>
-          <div class="projects-head">
-            <h2>Projects</h2>
-            <a class="projects-link" href="#">View all projects</a>
-          </div>
-          <p class="projects-subcopy">
-            Every project starts with a problem worth solving. Here is what I have designed.
-          </p>
-          <div class="work-filters" aria-label="Project categories">
-            <button class="filter-chip is-active" type="button">All Projects</button>
-            <button class="filter-chip" type="button">Case Studies</button>
-            <button class="filter-chip" type="button">Product Design</button>
-            <button class="filter-chip" type="button">Websites</button>
-            <button class="filter-chip" type="button">Branding</button>
-            <button class="filter-chip" type="button">Design &amp; Dev</button>
-          </div>
-
-          <div class="work-slider-controls" aria-label="Project slider controls">
-            <button class="slider-btn" type="button" data-dir="prev" aria-label="Previous project">
-              &#8592;
-            </button>
-            <button class="slider-btn" type="button" data-dir="next" aria-label="Next project">
-              &#8594;
-            </button>
-          </div>
-
-          <div class="work-grid" tabindex="0" aria-label="Selected work slider">
-            <article class="work-card">
-              <div class="work-media work-media-fitzdo">
-                <iframe
-                  class="work-media-fitzdo-iframe"
-                  src="./fitzdo-case-study.html?embed=1"
-                  title="FITZDO case study — first screen preview"
-                  loading="lazy"
-                  tabindex="-1"
-                ></iframe>
+          <div class="wrapper-5">
+            <div class="view-project-wrapper">
+              <div class="w-layout-vflex view-project-container">
+                <div class="label-small-15 unq">View case study</div>
+                <div data-w-id="026c5b11-dc10-b6fd-8b10-713317d662fd" style="opacity:0;-webkit-transform:translate3d(-900%, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(-900%, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(-900%, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(-900%, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" class="chevron-right unq"><img loading="lazy" width="19.999168395996094" height="16" alt="" id="Icon-chevron" src="images/Shape.svg" class="chevron-icon unq"></div>
               </div>
-              <div class="work-meta">
-                <h3>FITZDO</h3>
-                <p>Healthcare partner portal — fitness, wellness, and care in one digital ecosystem.</p>
-                <a class="projects-link" href="./fitzdo-case-study.html">View case study</a>
+              <div class="indicator-3">
+                <div data-w-id="3d056b1b-fd0f-7d28-b8ab-26a749736018" style="width:1%" class="loader unq"></div>
               </div>
-            </article>
-
-            <article class="work-card">
-              <div class="work-media work-media-svgslides" aria-label="Sustainability Economics.ai full-screen presentation preview">
-                <iframe
-                  class="work-media-svgslides-iframe"
-                  src="./sustainabilityeconomics-svg-presentation.html#slide1"
-                  title="Sustainability Economics.ai — Re-branding presentation — slide 1 preview"
-                  loading="lazy"
-                  tabindex="-1"
-                ></iframe>
-              </div>
-              <div class="work-meta">
-                <h3>Sustainability Economics.ai — Re-branding</h3>
-                <p>Full-screen re-branding sequence (8 slides) for the Sustainability Economics.ai mark.</p>
-                <a class="projects-link" href="./sustainabilityeconomics-svg-presentation.html#slide1">View re-branding</a>
-              </div>
-            </article>
-
-            <article class="work-card">
-              <div class="work-media work-media-squadra" aria-label="Squadra case study preview">
-                <iframe
-                  class="work-media-squadra-iframe"
-                  src="./squadra-case-study.html"
-                  title="Squadra case study — first screen preview"
-                  loading="lazy"
-                  tabindex="-1"
-                ></iframe>
-              </div>
-              <div class="work-meta">
-                <h3>Squadra</h3>
-                <p>Product UX case study covering dashboard workflows and scalable learning experience design.</p>
-                <a class="projects-link" href="./squadra-case-study.html">View case study</a>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="experience" class="section experience-section">
-        <div class="container">
-          <div class="experience-head">
-            <span class="exp-symbol exp-symbol-star" aria-hidden="true"></span>
-            <div>
-              <p class="eyebrow">Professional Experience</p>
-              <h2>Experience</h2>
             </div>
-            <span class="exp-symbol exp-symbol-lines" aria-hidden="true"></span>
-          </div>
-          <p class="experience-intro">
-            Hands-on product design journey across climate-tech, design studio, and marketing-led
-            environments.
-          </p>
-          <div class="exp-list">
-            <article class="exp-item exp-item-active">
-              <span class="exp-number">1</span>
-              <div class="exp-role">
-                <h3>UI/UX Designer</h3>
-                <p><span class="hero-highlight">Sustainainabilityeconomics.ai</span> - Bangalore</p>
-              </div>
-              <p class="exp-duration">Job Duration - 2+ Years</p>
-            </article>
-            <article class="exp-item">
-              <span class="exp-number">2</span>
-              <div class="exp-role">
-                <h3>UI/UX Designer</h3>
-                <p>Stead.global - Bangalore</p>
-              </div>
-              <p class="exp-duration">Job Duration - 1 Year</p>
-            </article>
-            <article class="exp-item">
-              <span class="exp-number">3</span>
-              <div class="exp-role">
-                <h3>Design and Marketing Head</h3>
-                <p>Adventure Voyage - Calicut</p>
-              </div>
-              <p class="exp-duration">Job Duration - 3 Years</p>
-            </article>
+            <div class="paragraph-medium-4">LMS admin UX case study: dashboard, course creation, course list, mobile patterns, and design system artifacts.</div>
           </div>
         </div>
-      </section>
-
-      <section id="about" class="section section-soft">
-        <div class="container">
-          <p class="eyebrow">A Generalist Focused in</p>
-          <h2>Product Design</h2>
-          <div class="focus-grid">
-            <article class="focus-card focus-wide focus-card--illustrated">
-              <div>
-                <h3>UX Research</h3>
+        <div class="image---unq">
+          <img src="RetrofitX%20UI%20Screen/PREVIEW%202.svg" loading="lazy" alt="Squadra case study preview" class="hover-animate" style="max-height: 100%; width: auto;">
+        </div>
+      </a>
+      <a data-w-id="db048325-5455-7185-e926-c9ec87c820ed" href="retrofitx-case-study.html" class="project-card---hfg w-inline-block">
+        <div class="content">
+          <div class="wrapper-8">
+            <div class="retrofitx-brand-logo" style="font-family: Montserrat, sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.08em;">RETROFIT<span style="color:#007A6F">X</span></div>
+            <div class="label-medium">Sustainable buildings — portfolio emissions intelligence, benchmarking, and floor-level retrofit planning.</div>
+          </div>
+          <div class="wrapper-5">
+            <div class="view-project-wrapper">
+              <div class="w-layout-vflex view-project-container">
+                <div class="label-small-15 hfg">View case study</div>
+                <div data-w-id="c77c7d70-d128-9b99-9f8e-830bb3310c0a" style="opacity:0;-webkit-transform:translate3d(-900%, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(-900%, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(-900%, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(-900%, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" class="chevron-right hfg"><img loading="lazy" width="19.999168395996094" height="16" alt="" id="Icon-chevron" src="images/Shape-1.svg" class="chevron-icon hfg"></div>
               </div>
-              <img
-                class="focus-card-illustration"
-                src="./svg/UX%20RESEARCH.svg"
-                alt=""
-                loading="lazy"
-                decoding="async"
-              />
-            </article>
-            <article class="focus-card focus-card--illustrated focus-card--visual-line">
-              <div>
-                <h3>Visual Design</h3>
+              <div class="indicator-3">
+                <div data-w-id="e0e50fbf-fd2f-5e79-a2ee-c11477edc63e" style="width:1%" class="loader hfg"></div>
               </div>
-              <img
-                class="focus-card-illustration"
-                src="./svg/Visual%20Design.svg"
-                alt=""
-                loading="lazy"
-                decoding="async"
-              />
-            </article>
-            <article class="focus-card focus-card--illustrated">
-              <div>
-                <h3>Branding</h3>
-              </div>
-              <img
-                class="focus-card-illustration"
-                src="./svg/Branding.svg"
-                alt=""
-                loading="lazy"
-                decoding="async"
-              />
-            </article>
-            <article class="focus-card focus-wide focus-card--illustrated focus-card--systems-line">
-              <div>
-                <h3>Design Systems</h3>
-              </div>
-              <img
-                class="focus-card-illustration"
-                src="./svg/Design%20systems.svg"
-                alt=""
-                loading="lazy"
-                decoding="async"
-              />
-            </article>
+            </div>
+            <div class="paragraph-medium-4">UX case study for a data-driven platform that helps commercial owners track emissions, benchmark peers, and simulate floor-by-floor retrofit scenarios.</div>
           </div>
         </div>
-      </section>
-
-      <section id="contact" class="section">
-        <div class="container contact">
-          <p class="eyebrow">What's next?</p>
-          <h2 class="contact-title">
-            <span class="contact-title-line">Intrigued by what you've seen?</span>
-            <span class="contact-title-line">Let's take a Peek to</span>
-          </h2>
-          <a class="btn-peek" href="#projects">Projects</a>
+        <div class="image---hfg"><img src="RetrofitX%20UI%20Screen/PR%2031.png" loading="lazy" width="2160" height="1600" alt="RetrofitX Property Portfolio dashboard preview" class="hover-animate retrofitx-preview-img"></div>
+      </a>
+    </div>
+  </div>
+  <div class="session-3" style="background-color: #17191E;">
+    <div data-w-id="4401c677-2083-fd8f-f3d1-e967350958b3" class="text-wrapper">
+      <div class="heading-small mobile">A Generalist Focused in</div>
+      <div class="heading-large mobile">Product Design</div>
+    </div>
+    <style>
+      .focus-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.2rem;
+        width: 100%;
+        margin-top: 40px;
+      }
+      .focus-card {
+        position: relative;
+        min-height: 230px;
+        background: #000000;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 0.65rem;
+        box-shadow: none;
+        overflow: hidden;
+      }
+      .focus-wide {
+        grid-column: span 2;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .focus-card > div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 24px;
+        box-sizing: border-box;
+        z-index: 2;
+      }
+      .focus-card .focus-card-illustration {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: auto;
+        margin: 0;
+        display: block;
+        object-fit: cover;
+        transform: scale(1.08);
+        pointer-events: none;
+        z-index: 1;
+      }
+      .focus-card h3 {
+        font-size: clamp(1.2rem, 2vw, 2rem);
+        margin: 0 0 0.35rem 0;
+        font-weight: 500;
+        color: #ffffff;
+        font-family: Montserrat, sans-serif;
+      }
+      .focus-card .focus-card-line {
+        margin: 0;
+        font-size: clamp(0.72rem, 1.15vw, 0.875rem);
+        font-weight: 400;
+        line-height: 1.4;
+        color: rgba(255, 255, 255, 0.58);
+        font-family: Montserrat, sans-serif;
+        max-width: 36ch;
+      }
+      .focus-card--visual-line h3,
+      .focus-card--systems-line h3 {
+        white-space: nowrap;
+      }
+      @media (max-width: 900px) {
+        .focus-grid {
+          grid-template-columns: 1fr;
+          padding: 0 4%;
+        }
+        .focus-wide {
+          grid-column: span 1;
+        }
+        .focus-card {
+          min-height: 180px;
+        }
+      }
+    </style>
+    <div class="focus-grid">
+      <article class="focus-card focus-wide">
+        <div>
+          <h3>UX Research</h3>
+          <p class="focus-card-line">Validate ideas with real users early.</p>
         </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-wrap">
-        <p>&copy; <span id="year"></span> Vysakh TK</p>
-        <div class="socials">
-          <a href="https://www.linkedin.com/in/vysakhtk02/" aria-label="LinkedIn profile">LinkedIn</a>
-          <a href="https://www.behance.net/vysakhtk" aria-label="Behance profile">Behance</a>
+        <img class="focus-card-illustration" src="images/ux-research.svg" alt="" loading="lazy" decoding="async" />
+      </article>
+      <article class="focus-card focus-card--visual-line">
+        <div>
+          <h3>Visual Design</h3>
+          <p class="focus-card-line">Clear, polished interfaces.</p>
+        </div>
+        <img class="focus-card-illustration" src="images/visual-design.svg" alt="" loading="lazy" decoding="async" />
+      </article>
+      <article class="focus-card">
+        <div>
+          <h3>Branding</h3>
+          <p class="focus-card-line">Cohesive look and voice everywhere.</p>
+        </div>
+        <img class="focus-card-illustration" src="images/branding.svg" alt="" loading="lazy" decoding="async" />
+      </article>
+      <article class="focus-card focus-wide focus-card--systems-line">
+        <div>
+          <h3>Design Systems</h3>
+          <p class="focus-card-line">Reusable components for consistent UI.</p>
+        </div>
+        <img class="focus-card-illustration" src="images/design-systems.svg" alt="" loading="lazy" decoding="async" />
+      </article>
+    </div>
+  </div>
+  <div class="session-4">
+    <div class="text-wrapper-2">
+      <div data-w-id="34c434a6-af02-0048-904d-1e6ddc904f10" class="heading-medium-2">What’s next?</div>
+      <div class="wrapper-7">
+        <div data-w-id="34c434a6-af02-0048-904d-1e6ddc904f13" class="heading-small-2">Intrigued by what you&#x27;ve seen?</div>
+        <div data-w-id="34c434a6-af02-0048-904d-1e6ddc904f15" class="heading-small-2">Let&#x27;s take a Peek to</div>
+      </div>
+    </div>
+    <a href="all-projects.html" class="let-s-chat-wrapper-link w-inline-block">
+      <div class="w-layout-vflex button-wrapper let-s-chat">
+        <div data-w-id="5c0558ca-457e-4ad0-ecbe-b4f362fe038d" style="-webkit-transform:translate3d(0, 0, 0) scale3d(1.2, 1.2, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1.2, 1.2, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1.2, 1.2, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1.2, 1.2, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" class="button---about-me contact-me home">
+          <div class="icon-4 mail home"><img src="images/Vectors-Wrapper_12.svg" loading="lazy" width="20" height="17" alt="" class="vectors-wrapper-27"></div>
+          <div class="text-14 home">Projects</div>
         </div>
       </div>
-    </footer>
+    </a>
+  </div>
+  <div class="seperator-container">
+    <div class="saperator-2"></div>
+  </div>
 
-    <script src="./script.js"></script>
-  </body>
+  <!-- Animation Section-->
+
+  
+
+  <!-- Section Over-->
+   
+
+  <div id="Nab-Bar" class="header-container home-bottom">
+    <div class="header">
+      <a href="index.html" aria-current="page" class="link-box w-inline-block w--current">
+        <div class="label-small selected">Home</div>
+      </a>
+      <a href="all-projects.html" class="link-block w-inline-block">
+        <div class="label-small disabled">Projects</div>
+      </a>
+      <a href="about-me.html" class="link-block-7 w-inline-block">
+        <div class="label-small disabled">About Me</div>
+      </a>
+    </div>
+  </div>
+  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=652680d753e9ac5aa0dbd69b" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="js/webflow.js" type="text/javascript"></script>
+
+
+</body>
 </html>
