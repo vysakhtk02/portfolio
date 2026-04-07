@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="retrofitx-locked">
 <head>
 <meta charset="UTF-8">
+<style id="retrofitx-lock-critical">
+  html.retrofitx-locked #retrofitx-main { display: none !important; visibility: hidden; }
+  html.retrofitx-locked body.retrofitx-body--locked { overflow: hidden; }
+</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RetrofitX — Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,6 +48,45 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body { font-family: var(--font-body); background: var(--bg); color: var(--sec); overflow-x: hidden; font-weight: 400; }
+body.retrofitx-body--locked {
+  overflow: hidden;
+}
+/* Entire case study hidden until passphrase (see #retrofitx-full-gate script) */
+#retrofitx-main.retrofitx-main--locked {
+  display: none !important;
+}
+#retrofitx-full-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 24px;
+  background: var(--bg);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#retrofitx-full-gate[hidden] {
+  display: none !important;
+}
+.retrofitx-full-gate-inner {
+  width: 100%;
+  max-width: 480px;
+  padding: 40px 36px 44px;
+  background: var(--surface);
+  border: 1px solid var(--gray);
+  border-top: 4px solid var(--primary);
+  box-shadow: 0 24px 60px rgba(15, 38, 38, 0.12);
+}
+.retrofitx-full-gate-inner .sec-title {
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.retrofitx-full-gate-inner .ui-gate-p { margin-bottom: 22px; }
+.retrofitx-full-gate-inner .ui-gate-form { margin-bottom: 0; }
+.retrofitx-full-gate-inner .ui-gate-note { margin-top: 20px; margin-bottom: 0; }
 body::after {
   content: '';
   position: fixed; inset: 0;
@@ -466,6 +509,76 @@ nav {
 #product-ui {
   background: var(--bg); border-top: 1px solid var(--gray);
 }
+/* Shared passphrase form (full-page gate) */
+.ui-gate-p {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--smoke);
+  line-height: 1.75;
+  margin: 0 0 22px;
+  max-width: 52ch;
+}
+.ui-gate-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.ui-gate-form label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.ui-gate-form input[type="password"] {
+  flex: 1;
+  min-width: 200px;
+  max-width: 320px;
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  border: 1px solid var(--gray);
+  background: var(--ink-3);
+  color: var(--sec);
+}
+.ui-gate-form input[type="password"]:focus {
+  outline: 2px solid rgba(0, 122, 111, 0.35);
+  outline-offset: 1px;
+}
+.ui-gate-form button {
+  padding: 12px 24px;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ui-gate-form button:hover { background: var(--primary-dk); }
+.ui-gate-error {
+  flex: 100%;
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #b42318;
+}
+.ui-gate-error[hidden] { display: none !important; }
+.ui-gate-note {
+  margin-top: 18px;
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 1.55;
+  max-width: 48ch;
+}
 .ui-intro { margin-bottom: 56px; max-width: 640px; }
 .ui-screens { display: flex; flex-direction: column; gap: 48px; }
 .ui-screen {
@@ -582,6 +695,10 @@ footer { background: var(--surface); border-top: 1px solid var(--gray); padding:
   .ui-screens{gap:36px}
   .ui-screen-head{padding:20px 20px 18px;grid-template-columns:1fr;gap:12px}
   .ui-screen-n{grid-row:auto;font-size:28px}
+  .retrofitx-full-gate-inner{padding:28px 22px 32px}
+  .ui-gate-form{flex-direction:column;align-items:stretch}
+  .ui-gate-form input[type="password"]{max-width:none}
+  .ui-gate-form button{width:100%}
   .prob-right{position:static} .flow-sticky{position:static}
   .feat-grid{grid-template-columns:1fr}
   .fhero{grid-column:span 1;grid-template-columns:1fr;gap:28px}
@@ -594,7 +711,24 @@ footer { background: var(--surface); border-top: 1px solid var(--gray); padding:
 }
 </style>
 </head>
-<body>
+<body class="retrofitx-body--locked">
+
+<div id="retrofitx-full-gate" class="retrofitx-full-gate" role="dialog" aria-modal="true" aria-labelledby="retrofitx-full-gate-title">
+  <div class="retrofitx-full-gate-inner">
+    <div class="eyebrow" style="margin-bottom:14px;"><div class="eyebrow-bar"></div><span class="eyebrow-txt">RetrofitX</span></div>
+    <h1 id="retrofitx-full-gate-title" class="sec-title">Case study</h1>
+    <p class="ui-gate-p">This project is shared under a private link. Enter the passphrase to view the full case study.</p>
+    <form id="retrofitx-full-gate-form" class="ui-gate-form" autocomplete="on">
+      <label for="retrofitx-full-pass">Passphrase</label>
+      <input id="retrofitx-full-pass" name="retrofitx_case_pass" type="password" required placeholder="Passphrase" autocomplete="current-password">
+      <button type="submit">Unlock</button>
+      <p id="retrofitx-full-gate-error" class="ui-gate-error" hidden role="alert">That passphrase is not correct.</p>
+    </form>
+    <p class="ui-gate-note">This page always requires a passphrase (from the portfolio or if you open this file directly). You will be asked again on each visit. Client-side only — not a substitute for an NDA or server access control.</p>
+  </div>
+</div>
+
+<main id="retrofitx-main" class="retrofitx-main retrofitx-main--locked">
 
 <!-- NAV -->
 <nav>
@@ -983,11 +1117,8 @@ footer { background: var(--surface); border-top: 1px solid var(--gray); padding:
   </div>
 </footer>
 
-<script>
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
-}, { threshold: 0.08, rootMargin: '0px 0px -28px 0px' });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-</script>
+</main>
+
+<script src="js/retrofitx-case-study-access.js"></script>
 </body>
 </html>
